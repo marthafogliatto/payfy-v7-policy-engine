@@ -719,6 +719,39 @@ a:hover { text-decoration: underline; }
 /* Audit metadata */
 .audit-meta { font-size: 11px; color: var(--gray-400); margin-top: var(--spacing-xs); padding-top: var(--spacing-xs); border-top: 1px solid rgba(0,0,0,0.05); }
 .audit-meta-ref { font-family: 'SF Mono', Monaco, monospace; color: var(--info-blue); font-weight: 500; }
+
+/* V7 Workflow Builder */
+.wf-builder { padding: var(--spacing-md) 0; }
+.wf-block { position: relative; }
+.wf-connector { display: flex; flex-direction: column; align-items: center; padding: var(--spacing-xs) 0; }
+.wf-connector-line { width: 2px; height: 16px; background: var(--gray-300); }
+.wf-connector-arrow { color: var(--gray-400); font-size: 10px; line-height: 1; }
+.wf-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.wf-card-header { padding: var(--spacing-sm) var(--spacing-md); display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-sm); min-height: 44px; }
+.wf-card-header-left { display: flex; align-items: center; gap: var(--spacing-sm); flex: 1; }
+.wf-card-body { padding: var(--spacing-md); border-top: 1px solid var(--border); }
+.wf-trigger .wf-card-header { background: #F0FDF4; border-bottom: 2px solid var(--success-green); }
+.wf-condition .wf-card-header { background: var(--info-blue-light); border-bottom: 2px solid var(--info-blue); }
+.wf-fallback .wf-card-header { background: var(--warning-yellow-light); border-bottom: 2px solid var(--warning-yellow); }
+.wf-end { background: var(--success-green-light); border: 1px solid #BBF7D0; border-radius: var(--radius-lg); padding: var(--spacing-sm) var(--spacing-md); text-align: center; font-size: 13px; font-weight: 600; color: var(--success-green); }
+.wf-icon { font-size: 16px; flex-shrink: 0; }
+.wf-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.wf-desc { font-size: 13px; color: var(--gray-700); }
+.wf-cond-row { display: flex; align-items: center; gap: var(--spacing-xs); padding: var(--spacing-xs) 0; font-size: 13px; }
+.wf-cond-kw { font-weight: 600; color: var(--info-blue); font-size: 12px; }
+.wf-cond-field { color: var(--gray-800); font-weight: 500; }
+.wf-action-badge { display: inline-flex; align-items: center; gap: var(--spacing-xs); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-md); font-size: 12px; font-weight: 600; margin-top: var(--spacing-sm); }
+.wf-action-approve { background: var(--success-green-light); color: var(--success-green); }
+.wf-action-escalate { background: var(--warning-yellow-light); color: #92400E; }
+.wf-action-block { background: var(--danger-red-light); color: var(--danger-red); }
+.wf-action-agent { background: var(--purple-light); color: var(--purple); }
+.wf-action-alert { background: var(--info-blue-light); color: var(--scope-cc-text); }
+.wf-add-block { display: flex; align-items: center; justify-content: center; padding: var(--spacing-xs); }
+.wf-add-btn { display: inline-flex; align-items: center; gap: var(--spacing-xs); padding: var(--spacing-xs) var(--spacing-sm); border: 1px dashed var(--gray-300); border-radius: var(--radius-md); background: transparent; font-size: 12px; color: var(--gray-400); min-height: 32px; transition: all 0.2s; }
+.wf-add-btn:hover { border-color: var(--primary-orange); color: var(--primary-orange); background: var(--primary-orange-light); }
+.wf-card-actions { display: flex; gap: var(--spacing-xs); }
+.wf-card-action { width: 28px; height: 28px; border: none; background: transparent; border-radius: var(--radius-sm); color: var(--gray-400); font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.wf-card-action:hover { background: var(--gray-100); color: var(--gray-600); }
 </style>
 </head>
 <body>
@@ -1142,39 +1175,34 @@ function renderWorkflowBuilder(ccKey, flow, isEdit) {
   const ruleText = defaultRules[flow] || '';
 
   let html = '<div class="inline-form" style="margin-top:var(--spacing-md);">';
-
-  // Alert with default rule info
   html += '<div class="wb-alert"><span>⚠️</span><div><strong>Regra padrão para ' + flow + ':</strong><br>' + ruleText + '</div></div>';
 
-  // Workflow builder container
-  html += '<div class="wb-container">';
-  html += '<div class="wb-header"><span class="wb-header-title">Workflow Builder</span><span class="exception-badge">Exceção CC</span></div>';
-  html += '<div class="wb-body">';
+  // V7 Visual Workflow Builder
+  html += '<div class="wf-builder" role="list">';
 
   // Trigger
-  html += '<div class="wb-trigger"><strong>QUANDO</strong> <span>' + flow + ' ocorre neste Centro de Custo</span></div>';
+  html += '<div class="wf-block wf-trigger" role="listitem"><div class="wf-card"><div class="wf-card-header"><div class="wf-card-header-left"><span class="wf-icon">🟢</span><span class="wf-label" style="color:var(--success-green);">Trigger</span><span class="wf-desc">Quando <strong>' + flow.toLowerCase() + '</strong> ocorre neste CC</span></div></div></div></div>';
+  html += '<div class="wf-connector"><div class="wf-connector-line"></div><div class="wf-connector-arrow">▼</div></div>';
 
   // Conditions
   tempConditions.forEach((c, idx) => {
-    if (idx > 0) {
-      html += '<div class="wb-connector"><div class="wb-connector-line"></div><span class="wb-connector-label">E</span></div>';
-    }
     html += renderConditionBlock(c, idx);
+    html += '<div class="wf-connector"><div class="wf-connector-line"></div><div class="wf-connector-arrow">▼</div></div>';
   });
 
-  html += '<button class="wb-add-btn" onclick="addCondition()">+ Adicionar condição</button>';
+  // Add block
+  html += '<div class="wf-add-block"><button class="wf-add-btn" onclick="addCondition()">+ Adicionar bloco</button></div>';
+  html += '<div class="wf-connector"><div class="wf-connector-line"></div><div class="wf-connector-arrow">▼</div></div>';
 
-  // Connector between conditions and actions
-  html += '<div class="wb-connector"><div class="wb-connector-line"></div><span class="wb-connector-label">ENTÃO</span></div>';
+  // Fallback with actions
+  html += '<div class="wf-block wf-fallback" role="listitem"><div class="wf-card"><div class="wf-card-header"><div class="wf-card-header-left"><span class="wf-icon">🟡</span><span class="wf-label" style="color:var(--warning-yellow);">Fallback</span><span class="wf-desc">Se nenhuma condição é atendida</span></div></div><div class="wf-card-body">';
+  tempActions.forEach((a, idx) => { html += renderActionBlock(a, idx); });
+  html += '</div></div></div>';
+  html += '<div class="wf-connector"><div class="wf-connector-line"></div><div class="wf-connector-arrow">▼</div></div>';
+  html += '<div class="wf-end" role="listitem">✅ Workflow concluído</div>';
+  html += '</div>';
 
-  // Actions
-  tempActions.forEach((a, idx) => {
-    html += renderActionBlock(a, idx);
-  });
-
-  html += '</div></div>';
-
-  // Save/Cancel buttons
+  // Save/Cancel
   html += '<div style="margin-top:var(--spacing-md);display:flex;gap:var(--spacing-sm);">';
   html += '<button class="btn btn-primary btn-sm" onclick="saveException(\'' + ccKey + '\',\'' + flow + '\',' + isEdit + ')">Salvar exceção</button>';
   html += '<button class="btn btn-secondary btn-sm" onclick="document.getElementById(\'exceptionFormArea\').innerHTML=\'\'">Cancelar</button>';
@@ -1185,37 +1213,34 @@ function renderWorkflowBuilder(ccKey, flow, isEdit) {
 }
 
 function renderConditionBlock(c, idx) {
-  let html = '<div class="wb-condition">';
-  html += '<span class="wb-condition-keyword">SE</span>';
-  html += '<select onchange="tempConditions[' + idx + '].field=this.value;renderWorkflowBuilder(builderCCKey,builderFlow,false)">';
-  ['Valor','Categoria','Fornecedor','Descrição'].forEach(f => {
+  let html = '<div class="wf-block wf-condition" role="listitem"><div class="wf-card"><div class="wf-card-header"><div class="wf-card-header-left"><span class="wf-icon">🔵</span><span class="wf-label" style="color:var(--info-blue);">Condição</span></div><div class="wf-card-actions">';
+  if (tempConditions.length > 1) html += '<button class="wf-card-action" onclick="removeCondition(' + idx + ')" aria-label="Remover">🗑</button>';
+  html += '</div></div><div class="wf-card-body"><div class="wf-cond-row"><span class="wf-cond-kw">SE</span>';
+  html += '<select onchange="tempConditions[' + idx + '].field=this.value;renderWorkflowBuilder(builderCCKey,builderFlow,false)" style="padding:var(--spacing-xs) var(--spacing-sm);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;font-family:inherit;min-height:32px;">';
+  ['Valor','Categoria','Fornecedor','Descrição','Tipo'].forEach(f => {
     html += '<option value="' + f + '"' + (c.field === f ? ' selected' : '') + '>' + f + '</option>';
   });
   html += '</select>';
-  html += '<select onchange="tempConditions[' + idx + '].op=this.value">';
+  html += '<select onchange="tempConditions[' + idx + '].op=this.value" style="padding:var(--spacing-xs) var(--spacing-sm);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;font-family:inherit;min-height:32px;">';
   ['menor que','maior que','igual a','diferente de','contém'].forEach(op => {
     html += '<option value="' + op + '"' + (c.op === op ? ' selected' : '') + '>' + op + '</option>';
   });
   html += '</select>';
-  html += '<input type="text" placeholder="Valor..." value="' + (c.value || '') + '" onchange="tempConditions[' + idx + '].value=this.value" style="min-width:100px;">';
-  if (tempConditions.length > 1) {
-    html += '<button class="wb-remove-btn" onclick="removeCondition(' + idx + ')" title="Remover condição">✕</button>';
-  }
-  html += '</div>';
+  html += '<input type="text" placeholder="Valor..." value="' + (c.value || '') + '" onchange="tempConditions[' + idx + '].value=this.value" style="width:120px;padding:var(--spacing-xs) var(--spacing-sm);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12px;font-family:inherit;min-height:32px;">';
+  html += '</div></div></div></div>';
   return html;
 }
 
 function renderActionBlock(a, idx) {
-  let html = '<div class="wb-action">';
-  html += '<span class="wb-action-keyword">AÇÃO</span>';
-  html += '<select onchange="updateAction(' + idx + ',this.value)">';
+  var cls = a.startsWith('Aprovar')?'wf-action-approve':a.startsWith('Escalar')?'wf-action-escalate':a==='Bloquear'?'wf-action-block':'wf-action-alert';
+  var icon = a.startsWith('Aprovar')?'✓':a.startsWith('Escalar')?'↗':a==='Bloquear'?'🚫':'⚠️';
+  let html = '<div class="wf-action-badge ' + cls + '">' + icon + ' ';
+  html += '<select onchange="updateAction(' + idx + ',this.value)" style="border:none;background:transparent;font-size:12px;font-weight:600;font-family:inherit;color:inherit;">';
   ['Aprovar automaticamente','Escalar para gestor','Exigir comprovante','Bloquear','Notificar admin'].forEach(act => {
     html += '<option value="' + act + '"' + (a === act ? ' selected' : '') + '>' + act + '</option>';
   });
   html += '</select>';
-  if (tempActions.length > 1) {
-    html += '<button class="wb-remove-btn" onclick="removeAction(' + idx + ')" title="Remover ação">✕</button>';
-  }
+  if (tempActions.length > 1) html += '<button style="border:none;background:transparent;color:inherit;cursor:pointer;font-size:12px;margin-left:var(--spacing-xs);" onclick="removeAction(' + idx + ')">✕</button>';
   html += '</div>';
   return html;
 }
