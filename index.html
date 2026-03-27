@@ -1888,6 +1888,33 @@ a:hover { text-decoration: underline; }
 .wf-add-block { display: flex; align-items: center; justify-content: center; padding: var(--spacing-xs); }
 .wf-add-btn { display: inline-flex; align-items: center; gap: var(--spacing-xs); padding: var(--spacing-xs) var(--spacing-sm); border: 1px dashed var(--gray-300); border-radius: var(--radius-md); background: transparent; font-size: 12px; color: var(--gray-400); min-height: 32px; transition: all 0.2s; }
 .wf-add-btn:hover { border-color: var(--primary-orange); color: var(--primary-orange); background: var(--primary-orange-light); }
+
+/* R1: Collapsible conditions */
+.wf-condition .wf-card-header { cursor: pointer; }
+.wf-condition .wf-card-header .wf-chevron { font-size: 10px; color: var(--gray-400); transition: transform 0.2s; margin-right: var(--spacing-xs); }
+.wf-condition.collapsed .wf-card-header .wf-chevron { transform: rotate(-90deg); }
+.wf-condition .wf-card-body { transition: max-height 0.2s ease, opacity 0.2s ease, padding 0.2s ease; overflow: hidden; }
+.wf-condition.collapsed .wf-card-body { max-height: 0; opacity: 0; padding: 0; border-top: none; }
+.wf-condition .wf-collapsed-summary { display: none; font-size: 12px; color: var(--gray-500); margin-left: var(--spacing-xs); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px; }
+.wf-condition.collapsed .wf-collapsed-summary { display: inline; }
+.wf-condition.collapsed .wf-label { display: none; }
+
+/* R2: In-policy progress bar */
+.ip-bar-wrap { display: inline-flex; align-items: center; gap: var(--spacing-xs); cursor: help; }
+.ip-bar { width: 120px; height: 4px; border-radius: 2px; background: linear-gradient(to right, #DC2626 0%, #DC2626 70%, #F59E0B 70%, #F59E0B 85%, #16A34A 85%, #16A34A 100%); position: relative; overflow: visible; }
+.ip-bar-fill { height: 100%; border-radius: 2px; background: transparent; position: relative; }
+.ip-bar-marker { position: absolute; right: 0; top: -2px; width: 2px; height: 8px; background: var(--gray-800); border-radius: 1px; }
+
+/* R4: Disabled sidebar items */
+.sidebar-item.disabled, .settings-item.disabled { opacity: 0.5; color: var(--gray-400) !important; cursor: default !important; pointer-events: none; }
+.sidebar-item.disabled:hover, .settings-item.disabled:hover { background: transparent !important; }
+.sidebar-item.disabled svg { color: var(--gray-400) !important; }
+
+/* R5: Hierarchy tooltip */
+.hierarchy-wrap { position: relative; cursor: help; }
+.hierarchy-tooltip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1F2937; color: white; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-md); font-size: 13px; line-height: 1.4; max-width: 300px; white-space: normal; z-index: 100; box-shadow: var(--shadow-lg); pointer-events: none; }
+.hierarchy-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #1F2937; }
+.hierarchy-wrap:hover .hierarchy-tooltip { display: block; }
 </style>
 </head>
 <body>
@@ -1910,19 +1937,19 @@ a:hover { text-decoration: underline; }
       <span class="sidebar-logo-text">payfy</span>
     </div>
     <div class="sidebar-nav">
-      <a href="#" class="sidebar-item" aria-label="Início">
+      <a class="sidebar-item disabled" aria-label="Início">
         <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
         Início
       </a>
-      <a href="#" class="sidebar-item" aria-label="Solicitações">
+      <a class="sidebar-item disabled" aria-label="Solicitações">
         <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
         Solicitações
       </a>
-      <a href="#" class="sidebar-item" aria-label="Cartões">
+      <a class="sidebar-item disabled" aria-label="Cartões">
         <svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>
         Cartões
       </a>
-      <a href="#" class="sidebar-item" aria-label="Usuários">
+      <a class="sidebar-item disabled" aria-label="Usuários">
         <svg viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>
         Usuários
       </a>
@@ -1930,15 +1957,15 @@ a:hover { text-decoration: underline; }
         <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/></svg>
         Despesas
       </a>
-      <a href="#" class="sidebar-item" aria-label="Passagens">
+      <a class="sidebar-item disabled" aria-label="Passagens">
         <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
         Passagens
       </a>
-      <a href="#" class="sidebar-item" aria-label="Benefícios">
+      <a class="sidebar-item disabled" aria-label="Benefícios">
         <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm2 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd"/><path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z"/></svg>
         Benefícios
       </a>
-      <a href="#" class="sidebar-item" aria-label="Relatórios">
+      <a class="sidebar-item disabled" aria-label="Relatórios">
         <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd"/></svg>
         Relatórios
       </a>
@@ -1955,26 +1982,26 @@ a:hover { text-decoration: underline; }
        ============================================ -->
   <nav class="settings-sidebar" id="settingsSidebar" aria-label="Configurações">
     <div class="settings-group-label">Organização</div>
-    <a href="#" class="settings-item">Geral</a>
+    <a class="settings-item disabled">Geral</a>
     <a href="centros-custo.html" class="settings-item">Unidades</a>
     <a href="times.html" class="settings-item">Times</a>
-    <a href="#" class="settings-item">Categorias</a>
-    <a href="#" class="settings-item">Projetos</a>
-    <a href="#" class="settings-item">Permissões</a>
+    <a class="settings-item disabled">Categorias</a>
+    <a class="settings-item disabled">Projetos</a>
+    <a class="settings-item disabled">Permissões</a>
 
     <div class="settings-separator"></div>
     <div class="settings-group-label">Política de Gastos</div>
     <a href="#" class="settings-item active">Políticas de Gastos</a>
-    <a href="#" class="settings-item">Despesas</a>
-    <a href="#" class="settings-item">Categorias</a>
-    <a href="#" class="settings-item">Reembolsos</a>
-    <a href="#" class="settings-item">Níveis de Aprovação</a>
-    <a href="#" class="settings-item">Regras de Gastos</a>
-    <a href="#" class="settings-item">Regras de Bloqueio</a>
+    <a class="settings-item disabled">Despesas</a>
+    <a class="settings-item disabled">Categorias</a>
+    <a class="settings-item disabled">Reembolsos</a>
+    <a class="settings-item disabled">Níveis de Aprovação</a>
+    <a class="settings-item disabled">Regras de Gastos</a>
+    <a class="settings-item disabled">Regras de Bloqueio</a>
 
     <div class="settings-separator"></div>
     <div class="settings-group-label">Integrações</div>
-    <a href="#" class="settings-item">ERP</a>
+    <a class="settings-item disabled">ERP</a>
 
     <div class="settings-separator"></div>
     <div class="settings-group-label">Cartões</div>
@@ -2010,7 +2037,7 @@ a:hover { text-decoration: underline; }
           <span class="agent-info">
             Modo: Recomendação
             <span class="agent-info-divider">·</span>
-            <span style="cursor:pointer;" onclick="switchTab('Compliance')" title="Percentual de gastos dentro da política nos últimos 90 dias. Meta: 90%.">84.5% in-policy <span style="color:var(--danger-red);font-weight:600;">↓2.3%</span></span>
+            <span style="cursor:pointer;" onclick="switchTab('Compliance')"><span title="Percentual de gastos dentro da política nos últimos 90 dias. Meta: 90%.">84.5% in-policy <span style="color:var(--danger-red);font-weight:600;">↓2.3%</span></span><br><span class="ip-bar-wrap" title="Meta: ≥85% · Atenção: 70-85% · Crítico: &lt;70%"><span class="ip-bar"><span class="ip-bar-fill" style="width:84.5%;"><span class="ip-bar-marker"></span></span></span></span></span>
             <span class="agent-info-divider">·</span>
             99.1% acurácia
             <span class="agent-info-divider">·</span>
@@ -2018,12 +2045,13 @@ a:hover { text-decoration: underline; }
             <span class="agent-info-divider">·</span>
             R$ 185k economia estimada
           </span>
-          <div class="agent-hierarchy">
+          <div class="agent-hierarchy hierarchy-wrap">
             <span class="hierarchy-badge flags">Flags</span>
             <span style="color: var(--gray-400);">›</span>
             <span class="hierarchy-badge agent">Agent</span>
             <span style="color: var(--gray-400);">›</span>
             <span class="hierarchy-badge workflows">Workflows</span>
+            <div class="hierarchy-tooltip">Hierarquia de prioridade das regras: Flags (máxima) sobrepõem o Agent, que sobrepõe os Workflows</div>
           </div>
         </div>
         <div class="agent-banner-right">
@@ -2121,7 +2149,7 @@ a:hover { text-decoration: underline; }
               <div class="summary-pills">
                 <span class="pill pill-agent">3 Agent</span>
                 <span class="pill pill-flag">2 Flags</span>
-                <span class="pill pill-conf">1 Conf.</span>
+                <span class="pill pill-conf" title="1 regra confidencial (visível apenas para perfis autorizados)">🔒 1</span>
               </div>
               <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
             </button>
@@ -2308,7 +2336,7 @@ a:hover { text-decoration: underline; }
               <div class="summary-pills">
                 <span class="pill pill-agent">3 Agent</span>
                 <span class="pill pill-flag">2 Flags</span>
-                <span class="pill pill-conf">1 Conf.</span>
+                <span class="pill pill-conf" title="1 regra confidencial (visível apenas para perfis autorizados)">🔒 1</span>
               </div>
               <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
             </button>
@@ -3349,6 +3377,41 @@ document.addEventListener('keydown', function(e) {
     document.getElementById('fabDrawer').classList.remove('open');
   }
 });
+
+// R1: Collapsible condition blocks
+document.addEventListener('click', function(e) {
+  var header = e.target.closest('.wf-condition .wf-card-header');
+  if (!header) return;
+  // Don't collapse if clicking action buttons
+  if (e.target.closest('.wf-card-actions') || e.target.closest('.wf-card-action')) return;
+  var block = header.closest('.wf-condition');
+  block.classList.toggle('collapsed');
+});
+
+// Add chevrons and summaries to condition blocks on load
+function initCollapsibleConditions() {
+  document.querySelectorAll('.wf-condition').forEach(function(block) {
+    var headerLeft = block.querySelector('.wf-card-header-left');
+    if (!headerLeft || headerLeft.querySelector('.wf-chevron')) return;
+    // Add chevron
+    var chevron = document.createElement('span');
+    chevron.className = 'wf-chevron';
+    chevron.textContent = '▼';
+    headerLeft.insertBefore(chevron, headerLeft.firstChild);
+    // Build summary from condition text
+    var condRows = block.querySelectorAll('.wf-cond-row');
+    var summary = '';
+    condRows.forEach(function(row) { summary += row.textContent.trim() + ' '; });
+    var summaryEl = document.createElement('span');
+    summaryEl.className = 'wf-collapsed-summary';
+    summaryEl.textContent = '— ' + summary.trim();
+    headerLeft.appendChild(summaryEl);
+  });
+}
+// Init on page load and after accordion expands
+var origToggleAccordion = toggleAccordion;
+toggleAccordion = function(card) { origToggleAccordion(card); setTimeout(initCollapsibleConditions, 50); };
+setTimeout(initCollapsibleConditions, 100);
 
 // Sub-tab switching
 function switchSubTab(context, btn, panelId) {
