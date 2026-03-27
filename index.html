@@ -371,7 +371,7 @@ a:hover { text-decoration: underline; }
   padding: var(--spacing-sm);
 }
 
-.agent-dropdown.show { display: block; }
+/* dropdown now controlled via inline style + JS body append */
 
 .agent-dropdown-item {
   display: flex;
@@ -2055,10 +2055,10 @@ a:hover { text-decoration: underline; }
           </div>
         </div>
         <div class="agent-banner-right">
-          <button class="btn btn-secondary btn-sm" onclick="toggleAgentDropdown()" aria-expanded="false" aria-controls="agentDropdown">
+          <button class="btn btn-secondary btn-sm" id="agentDropdownBtn" onclick="toggleAgentDropdown()" aria-expanded="false" aria-controls="agentDropdown">
             Configurar Agent ▾
           </button>
-          <div class="agent-dropdown" id="agentDropdown" role="menu">
+          <div class="agent-dropdown" id="agentDropdown" role="menu" style="display:none;">
             <button class="agent-dropdown-item" role="menuitem" onclick="setAgentMode('off')">
               <span style="width:8px;height:8px;border-radius:50%;background:var(--gray-400);flex-shrink:0;"></span>
               Desativar Agent
@@ -3198,13 +3198,20 @@ function switchView(view) {
 // Agent dropdown
 function toggleAgentDropdown() {
   const dd = document.getElementById('agentDropdown');
-  const btn = dd.previousElementSibling;
-  dd.classList.toggle('show');
-  btn.setAttribute('aria-expanded', dd.classList.contains('show'));
-  if (dd.classList.contains('show')) {
+  const btn = document.getElementById('agentDropdownBtn');
+  // Move dropdown to body on first open so it's not clipped
+  if (dd.parentElement !== document.body) {
+    document.body.appendChild(dd);
+  }
+  const isOpen = dd.style.display === 'block';
+  dd.style.display = isOpen ? 'none' : 'block';
+  btn.setAttribute('aria-expanded', !isOpen);
+  if (!isOpen) {
     const rect = btn.getBoundingClientRect();
+    dd.style.position = 'fixed';
     dd.style.top = (rect.bottom + 4) + 'px';
     dd.style.right = (window.innerWidth - rect.right) + 'px';
+    dd.style.zIndex = '1000';
   }
 }
 
@@ -3360,9 +3367,10 @@ function trapFocus(element) {
 // Close dropdown on outside click
 document.addEventListener('click', function(e) {
   const dd = document.getElementById('agentDropdown');
-  const bannerRight = document.querySelector('.agent-banner-right');
-  if (dd && dd.classList.contains('show') && !bannerRight.contains(e.target)) {
-    dd.classList.remove('show');
+  const btn = document.getElementById('agentDropdownBtn');
+  if (dd && dd.style.display === 'block' && !dd.contains(e.target) && !btn.contains(e.target)) {
+    dd.style.display = 'none';
+    btn.setAttribute('aria-expanded', 'false');
   }
 
   const fabDrawer = document.getElementById('fabDrawer');
@@ -3378,7 +3386,7 @@ document.addEventListener('keydown', function(e) {
     closeSlideover();
     closeSidebars();
     document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-    document.getElementById('agentDropdown').classList.remove('show');
+    document.getElementById('agentDropdown').style.display = 'none';
     document.getElementById('fabDrawer').classList.remove('open');
   }
 });
