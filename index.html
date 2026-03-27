@@ -359,15 +359,15 @@ a:hover { text-decoration: underline; }
 
 .agent-dropdown {
   display: none;
-  position: absolute;
-  top: calc(100% + var(--spacing-xs));
-  right: 0;
+  position: fixed;
+  top: auto;
+  right: var(--spacing-lg);
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-xl);
   min-width: 320px;
-  z-index: 200;
+  z-index: 1000;
   padding: var(--spacing-sm);
 }
 
@@ -3201,6 +3201,11 @@ function toggleAgentDropdown() {
   const btn = dd.previousElementSibling;
   dd.classList.toggle('show');
   btn.setAttribute('aria-expanded', dd.classList.contains('show'));
+  if (dd.classList.contains('show')) {
+    const rect = btn.getBoundingClientRect();
+    dd.style.top = (rect.bottom + 4) + 'px';
+    dd.style.right = (window.innerWidth - rect.right) + 'px';
+  }
 }
 
 function setAgentMode(mode) {
