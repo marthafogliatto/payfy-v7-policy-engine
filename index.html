@@ -2059,21 +2059,21 @@ a:hover { text-decoration: underline; }
             Configurar Agent ▾
           </button>
           <div class="agent-dropdown" id="agentDropdown" role="menu" style="display:none;">
-            <button class="agent-dropdown-item" role="menuitem" onclick="setAgentMode('off')">
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--gray-400);flex-shrink:0;"></span>
-              Desativar Agent
+            <button class="agent-dropdown-item" role="menuitem" onclick="setAgentMode('off')" style="align-items:flex-start;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--gray-400);flex-shrink:0;margin-top:5px;"></span>
+              <div><div style="font-size:14px;font-weight:500;color:var(--gray-800);">Desativar Agent</div><div style="font-size:12px;color:var(--gray-500);line-height:1.4;margin-top:var(--spacing-xs);">Agent não analisa nenhuma despesa. Todas seguem o fluxo manual de aprovação.</div></div>
             </button>
-            <button class="agent-dropdown-item" role="menuitem" onclick="setAgentMode('test')">
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--warning-yellow);flex-shrink:0;"></span>
-              Modo Teste
+            <button class="agent-dropdown-item" role="menuitem" onclick="setAgentMode('test')" style="align-items:flex-start;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--warning-yellow);flex-shrink:0;margin-top:5px;"></span>
+              <div><div style="font-size:14px;font-weight:500;color:var(--gray-800);">Modo Teste</div><div style="font-size:12px;color:var(--gray-500);line-height:1.4;margin-top:var(--spacing-xs);">Agent analisa em segundo plano, mas nenhuma ação é tomada. Útil para validar regras antes de ativar.</div></div>
             </button>
-            <button class="agent-dropdown-item active" role="menuitem" onclick="setAgentMode('recommend')">
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--info-blue);flex-shrink:0;"></span>
-              Recomendação
+            <button class="agent-dropdown-item active" role="menuitem" onclick="setAgentMode('recommend')" style="align-items:flex-start;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--info-blue);flex-shrink:0;margin-top:5px;"></span>
+              <div><div style="font-size:14px;font-weight:500;color:var(--gray-800);">Recomendação</div><div style="font-size:12px;color:var(--gray-500);line-height:1.4;margin-top:var(--spacing-xs);">Agent sugere aprovar, revisar ou rejeitar. Gestor toma a decisão final.</div></div>
             </button>
-            <button class="agent-dropdown-item" role="menuitem" onclick="setAgentMode('auto')">
-              <span style="width:8px;height:8px;border-radius:50%;background:var(--success-green);flex-shrink:0;"></span>
-              Aprovação Automática
+            <button class="agent-dropdown-item" role="menuitem" onclick="setAgentMode('auto')" style="align-items:flex-start;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--success-green);flex-shrink:0;margin-top:5px;"></span>
+              <div><div style="font-size:14px;font-weight:500;color:var(--gray-800);">Aprovação Automática</div><div style="font-size:12px;color:var(--gray-500);line-height:1.4;margin-top:var(--spacing-xs);">Agent aprova despesas dentro da política sem intervenção humana. Exceções vão para revisão.</div></div>
             </button>
             <div class="agent-dropdown-separator"></div>
             <div class="threshold-section">
@@ -2082,6 +2082,7 @@ a:hover { text-decoration: underline; }
                 <span id="thresholdValue">85%</span>
               </div>
               <input type="range" class="threshold-slider" min="50" max="99" value="85" oninput="document.getElementById('thresholdValue').textContent=this.value+'%'" aria-label="Threshold de confiança do Agent">
+              <div style="font-size:12px;color:var(--gray-500);line-height:1.4;margin-top:var(--spacing-sm);">Despesas com confiança acima deste valor são processadas automaticamente. Abaixo, vão para revisão manual.</div>
             </div>
           </div>
         </div>
