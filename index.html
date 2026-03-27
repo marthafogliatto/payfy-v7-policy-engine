@@ -2078,10 +2078,10 @@ a:hover { text-decoration: underline; }
             <div class="agent-dropdown-separator"></div>
             <div class="threshold-section">
               <div class="threshold-label">
-                <span>Threshold de confiança</span>
+                <span>Nível mínimo para auto-aprovação</span>
                 <span id="thresholdValue">85%</span>
               </div>
-              <input type="range" class="threshold-slider" min="50" max="99" value="85" oninput="document.getElementById('thresholdValue').textContent=this.value+'%'" aria-label="Threshold de confiança do Agent">
+              <input type="range" class="threshold-slider" min="50" max="99" value="85" oninput="document.getElementById('thresholdValue').textContent=this.value+'%'" aria-label="Nível mínimo para auto-aprovação do Agent">
               <div style="font-size:12px;color:var(--gray-500);line-height:1.4;margin-top:var(--spacing-sm);">Despesas com confiança acima deste valor são processadas automaticamente. Abaixo, vão para revisão manual.</div>
             </div>
           </div>
@@ -3498,7 +3498,7 @@ var auditData = [
   {icon:'🤖',code:'AUD-2026-03-1847',type:'AUD',label:'Decisão do Agent',time:'há 3 horas',desc:'Policy Agent auto-aprovou despesa #DEP-2026-03-0892 (iFood R$ 87,50 — Maria Oliveira)',detail:'Confiança: 98% · Regra: "Auto-aprovação ≤ R$ 2.000"',author:'Policy Agent',links:'<a href="despesas.html">Ver despesa →</a>'},
   {icon:'🟠',code:'OVR-2026-03-0008',type:'OVR',label:'Override humano',time:'há 5 horas',desc:'Ana Pereira reverteu decisão do Agent para despesa #DEP-2026-03-0856',detail:'Agent: Rejeitar (82%) → Humano: Aprovar. Motivo: "Evento corporativo aprovado pelo CEO"',author:'Ana Pereira',links:'<a href="despesas.html">Ver despesa →</a>'},
   {icon:'🤖',code:'AUD-2026-03-1845',type:'AUD',label:'Decisão do Agent',time:'há 6 horas',desc:'Policy Agent recomendou revisão para despesa #DEP-2026-03-0851 (Decolar R$ 8.750 — Francisco D.)',detail:'Confiança: 58% · Regra: "Viagens > R$ 5.000"',author:'Policy Agent',links:''},
-  {icon:'⚙️',code:'CFG-2026-03-0003',type:'CFG',label:'Mudança de configuração',time:'há 1 dia',desc:'André A. alterou modo do Policy Agent: Teste → Recomendação',detail:'Threshold de confiança mantido em 85%',author:'André A.',links:''},
+  {icon:'⚙️',code:'CFG-2026-03-0003',type:'CFG',label:'Mudança de configuração',time:'há 1 dia',desc:'André A. alterou modo do Policy Agent: Teste → Recomendação',detail:'Nível mínimo para auto-aprovação mantido em 85%',author:'André A.',links:''},
   {icon:'📋',code:'CMP-2026-03-0005',type:'CMP',label:'Regra de compliance',time:'há 2 dias',desc:'André A. criou regra "Bloqueio — Padaria da Esquina"',detail:'Tipo: Bloqueio · Escopo: Empresa toda',author:'André A.',links:''},
   {icon:'🟣',code:'EXC-2026-03-0018',type:'EXC',label:'Exceção criada',time:'há 2 dias',desc:'Martha P. criou exceção para CC "Internacional — EUA": auto-aprovação até R$ 25.000',detail:'Escopo: CC · Ref: EXC-2026-03-0038',author:'Martha P.',links:'<a href="centros-custo.html">Ver exceção →</a>'},
   {icon:'🤖',code:'AUD-2026-03-1840',type:'AUD',label:'Decisão do Agent',time:'há 2 dias',desc:'Policy Agent auto-aprovou 12 despesas em lote (total R$ 2.340)',detail:'Todas < R$ 500 · Confiança média: 97%',author:'Policy Agent',links:''},
