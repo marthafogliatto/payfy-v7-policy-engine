@@ -1923,6 +1923,470 @@ a:hover { text-decoration: underline; }
 .hierarchy-tooltip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1F2937; color: white; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-md); font-size: 13px; line-height: 1.4; max-width: 300px; white-space: normal; z-index: 100; box-shadow: var(--shadow-lg); pointer-events: none; }
 .hierarchy-tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #1F2937; }
 .hierarchy-wrap:hover .hierarchy-tooltip { display: block; }
+
+/* ============================================
+   V8: FEATURE 1 — CC/Time Multi-select Filters
+   ============================================ */
+.filter-bar-row { display: flex; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap; flex: 1; }
+.multi-filter-wrap { position: relative; display: inline-block; }
+.multi-filter-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  min-height: 36px;
+  background: var(--white);
+  font-family: inherit;
+  color: var(--gray-700);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  white-space: nowrap;
+}
+.multi-filter-btn:hover { border-color: var(--gray-400); }
+.multi-filter-btn.has-selection { border-color: var(--primary-orange); background: var(--primary-orange-light); color: var(--primary-orange); font-weight: 600; }
+.multi-filter-btn .chevron { font-size: 10px; color: var(--gray-400); transition: transform 0.2s; }
+.multi-filter-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  min-width: 280px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding: var(--spacing-sm) 0;
+}
+.multi-filter-dropdown.open { display: block; }
+.multi-filter-search {
+  margin: var(--spacing-xs) var(--spacing-sm) var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  width: calc(100% - 16px);
+  font-family: inherit;
+}
+.multi-filter-search:focus { border-color: var(--info-blue); outline: none; }
+.multi-filter-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-xs);
+}
+.multi-filter-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: 13px;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.multi-filter-item:hover { background: var(--gray-50); }
+.multi-filter-item input[type="checkbox"] { accent-color: var(--primary-orange); cursor: pointer; }
+.multi-filter-item.select-all { font-weight: 600; color: var(--primary-orange); border-bottom: 1px solid var(--border); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-xs); }
+
+.filter-chips { display: flex; gap: var(--spacing-xs); flex-wrap: wrap; margin-top: var(--spacing-sm); align-items: center; }
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 2px var(--spacing-sm) 2px var(--spacing-md);
+  background: var(--primary-orange-light);
+  color: var(--primary-orange);
+  border-radius: var(--radius-2xl);
+  font-size: 12px;
+  font-weight: 500;
+}
+.filter-chip-remove { cursor: pointer; font-size: 14px; line-height: 1; padding: 2px; border-radius: 50%; }
+.filter-chip-remove:hover { background: rgba(229,90,32,0.15); }
+.filter-clear-all {
+  font-size: 12px;
+  color: var(--primary-orange);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 2px var(--spacing-sm);
+}
+.filter-clear-all:hover { color: var(--primary-orange-dark); }
+
+/* ============================================
+   V8: FEATURE 2 — Pagination
+   ============================================ */
+.table-footer-v8 {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 12px;
+  color: var(--gray-500);
+  border-top: 1px solid var(--border);
+  background: var(--gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+.page-size-btns { display: inline-flex; gap: 2px; align-items: center; margin-left: var(--spacing-sm); }
+.page-size-btn {
+  padding: 2px var(--spacing-sm);
+  border: 1px solid var(--border);
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-500);
+  cursor: pointer;
+  min-width: 32px;
+  text-align: center;
+}
+.page-size-btn.active { background: var(--primary-orange); color: var(--white); border-color: var(--primary-orange); }
+.page-size-btn:hover:not(.active) { background: var(--gray-100); }
+.pag-nav { display: inline-flex; gap: 2px; align-items: center; margin-left: var(--spacing-md); }
+.pag-nav-btn {
+  padding: 2px var(--spacing-sm);
+  border: 1px solid var(--border);
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--gray-600);
+  cursor: pointer;
+  min-width: 28px;
+  text-align: center;
+}
+.pag-nav-btn.active { background: var(--primary-orange); color: var(--white); border-color: var(--primary-orange); }
+.pag-nav-btn:hover:not(.active):not(:disabled) { background: var(--gray-100); }
+.pag-nav-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ============================================
+   V8: FEATURE 3 — Multi-select Exception Slide-over
+   ============================================ */
+.exception-slideover-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 300; display: none; }
+.exception-slideover-overlay.active { display: block; }
+.exception-slideover {
+  position: fixed; top: 0; right: -520px; width: 500px; max-width: 90vw; height: 100vh;
+  background: var(--white); z-index: 301; transition: right 0.3s ease;
+  display: flex; flex-direction: column; box-shadow: var(--shadow-xl);
+}
+.exception-slideover.open { right: 0; }
+.exc-so-header {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.exc-so-title { font-size: 18px; font-weight: 700; color: var(--gray-900); }
+.exc-so-subtitle { font-size: 13px; color: var(--gray-500); }
+.exc-so-close { background: none; border: none; font-size: 20px; color: var(--gray-400); cursor: pointer; padding: var(--spacing-xs); }
+.exc-so-close:hover { color: var(--gray-700); }
+.exc-so-body { flex: 1; overflow-y: auto; padding: var(--spacing-lg); }
+.exc-so-footer {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid var(--border);
+  display: flex; gap: var(--spacing-sm); justify-content: flex-end;
+}
+.exc-step { display: none; }
+.exc-step.active { display: block; }
+.exc-step-indicator {
+  display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-lg);
+}
+.exc-step-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  background: var(--gray-100); color: var(--gray-400);
+}
+.exc-step-dot.active { background: var(--primary-orange); color: var(--white); }
+.exc-step-dot.done { background: var(--success-green); color: var(--white); }
+.exc-radio-group { display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-md); }
+.exc-radio-option {
+  padding: var(--spacing-md);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.exc-radio-option.selected { border-color: var(--primary-orange); background: var(--primary-orange-light); color: var(--primary-orange); }
+.exc-selected-chips { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); margin-top: var(--spacing-md); min-height: 24px; }
+.exc-banner {
+  background: var(--info-blue-light);
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  font-size: 13px;
+  color: #1E40AF;
+  margin-bottom: var(--spacing-md);
+  font-weight: 500;
+}
+.exc-diff-item {
+  display: flex; justify-content: space-between;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.exc-diff-label { color: var(--gray-500); }
+.exc-diff-value { font-weight: 600; color: var(--gray-800); }
+
+/* ============================================
+   V8: FEATURE 4 — Checkboxes + Bulk Actions
+   ============================================ */
+.exc-checkbox-group { margin-top: var(--spacing-sm); }
+.exc-checkbox-header {
+  display: flex; align-items: center; gap: var(--spacing-sm);
+  padding: var(--spacing-xs) 0;
+  font-size: 12px; color: var(--gray-400);
+}
+.exc-checkbox-header input[type="checkbox"] { accent-color: var(--primary-orange); }
+.exc-checkbox-item {
+  display: flex; align-items: center; gap: var(--spacing-sm);
+  padding: var(--spacing-xs) 0 var(--spacing-xs) var(--spacing-lg);
+  font-size: 13px;
+}
+.exc-checkbox-item input[type="checkbox"] { accent-color: var(--primary-orange); flex-shrink: 0; }
+.exc-checkbox-item .exception-badge { margin-left: auto; }
+
+.bulk-action-bar {
+  position: fixed;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gray-900);
+  color: var(--white);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  z-index: 250;
+  transition: bottom 0.3s ease;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.bulk-action-bar.visible { bottom: var(--spacing-xl); }
+.bulk-action-bar .bulk-count { font-weight: 600; }
+.bulk-action-bar .btn-bulk {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bulk-action-bar .btn-bulk:hover { background: rgba(255,255,255,0.1); }
+.bulk-action-bar .btn-bulk-danger { border-color: #FCA5A5; color: #FCA5A5; }
+.bulk-action-bar .btn-bulk-danger:hover { background: rgba(220,38,38,0.2); }
+.bulk-action-bar .btn-bulk-close { background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 16px; padding: 0 4px; }
+.bulk-action-bar .btn-bulk-close:hover { color: var(--white); }
+
+/* ============================================
+   V8: FEATURE 5 — Inheritance Chain
+   ============================================ */
+.inheritance-section { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.inheritance-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--spacing-md);
+  background: var(--gray-50);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-700);
+  border: none; width: 100%;
+  text-align: left;
+}
+.inheritance-toggle:hover { background: var(--gray-100); }
+.inheritance-toggle .inh-chevron { font-size: 10px; color: var(--gray-400); transition: transform 0.2s; }
+.inheritance-toggle.open .inh-chevron { transform: rotate(180deg); }
+.inheritance-body { display: none; padding: var(--spacing-md); }
+.inheritance-body.open { display: block; }
+.inh-flow-select {
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  background: var(--white);
+  font-family: inherit;
+  width: 100%;
+}
+.inh-level {
+  border: 2px solid var(--gray-300);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  background: var(--gray-50);
+  position: relative;
+}
+.inh-level-geral { border-color: var(--gray-300); background: var(--gray-50); }
+.inh-level-cc { border-color: var(--info-blue); background: var(--info-blue-light); }
+.inh-level-time { border-color: var(--primary-orange); background: var(--primary-orange-light); }
+.inh-level-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--spacing-xs); }
+.inh-level-geral .inh-level-title { color: var(--gray-500); }
+.inh-level-cc .inh-level-title { color: #1E40AF; }
+.inh-level-time .inh-level-title { color: var(--primary-orange); }
+.inh-level-rule { font-size: 13px; color: var(--gray-700); }
+.inh-level-rule.overridden { text-decoration: line-through; color: var(--gray-400); }
+.inh-level-rule.effective { color: var(--success-green); font-weight: 600; }
+.inh-effective-badge {
+  display: inline-block;
+  background: var(--success-green-light);
+  color: var(--success-green);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px var(--spacing-sm);
+  border-radius: var(--radius-2xl);
+  margin-left: var(--spacing-sm);
+}
+.inh-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+  color: var(--gray-400);
+  font-size: 11px;
+}
+.inh-connector-line { width: 2px; height: 12px; background: var(--gray-300); }
+.inh-connector-text { font-size: 11px; color: var(--gray-400); font-style: italic; }
+
+/* ============================================
+   V8: FEATURE 6 — Diverge Badge
+   ============================================ */
+.diverge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px var(--spacing-sm);
+  border-radius: var(--radius-2xl);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: help;
+  position: relative;
+}
+.diverge-badge-warning { background: var(--warning-yellow-light); color: #92400E; }
+.diverge-badge-follows { background: var(--gray-100); color: var(--gray-500); }
+.diverge-badge .diverge-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gray-900);
+  color: var(--white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+  font-weight: 400;
+}
+.diverge-badge:hover .diverge-tooltip { display: block; }
+
+/* ============================================
+   V8: FEATURE 7 — Impact Preview Modal
+   ============================================ */
+.impact-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 400; display: none; align-items: center; justify-content: center; }
+.impact-modal-overlay.active { display: flex; }
+.impact-modal {
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  width: 520px;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+}
+.impact-modal-header {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.impact-modal-title { font-size: 18px; font-weight: 700; color: var(--gray-900); }
+.impact-modal-subtitle { font-size: 13px; color: var(--gray-500); margin-top: 2px; }
+.impact-modal-close { background: none; border: none; font-size: 20px; color: var(--gray-400); cursor: pointer; }
+.impact-modal-body { padding: var(--spacing-lg); }
+.impact-summary { display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-lg); }
+.impact-stat {
+  flex: 1;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+.impact-stat-affected { background: var(--success-green-light); }
+.impact-stat-unaffected { background: var(--warning-yellow-light); }
+.impact-stat-number { font-size: 28px; font-weight: 700; }
+.impact-stat-affected .impact-stat-number { color: var(--success-green); }
+.impact-stat-unaffected .impact-stat-number { color: var(--warning-yellow); }
+.impact-stat-label { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+.impact-detail-section {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+}
+.impact-detail-affected { background: var(--success-green-light); border-left: 4px solid var(--success-green); }
+.impact-detail-unaffected { background: var(--warning-yellow-light); border-left: 4px solid var(--warning-yellow); }
+.impact-detail-title { font-size: 13px; font-weight: 700; margin-bottom: var(--spacing-sm); color: var(--gray-800); cursor: pointer; }
+.impact-detail-list { font-size: 12px; color: var(--gray-600); line-height: 1.6; display: none; max-height: 150px; overflow-y: auto; }
+.impact-detail-list.open { display: block; }
+.impact-modal-footer {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid var(--border);
+  display: flex; gap: var(--spacing-sm); justify-content: flex-end;
+}
+
+/* ============================================
+   V8: FEATURE 4 — Bulk Edit + Delete Modals
+   ============================================ */
+.bulk-edit-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 400; display: none; align-items: center; justify-content: center; }
+.bulk-edit-modal-overlay.active { display: flex; }
+.bulk-edit-modal {
+  background: var(--white);
+  border-radius: var(--radius-2xl);
+  width: 480px;
+  max-width: 90vw;
+  box-shadow: var(--shadow-xl);
+}
+.bulk-edit-modal-header {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.bulk-edit-modal-title { font-size: 18px; font-weight: 700; color: var(--gray-900); }
+.bulk-edit-modal-body { padding: var(--spacing-lg); }
+.bulk-edit-field { margin-bottom: var(--spacing-md); }
+.bulk-edit-field label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: var(--spacing-xs); }
+.bulk-edit-field input, .bulk-edit-field select {
+  width: 100%; padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  font-size: 13px; font-family: inherit;
+}
+.bulk-edit-modal-footer {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid var(--border);
+  display: flex; gap: var(--spacing-sm); justify-content: flex-end;
+}
+.delete-confirm-modal .delete-warning {
+  background: var(--danger-red-light);
+  border-left: 4px solid var(--danger-red);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+  font-size: 13px;
+  color: #991B1B;
+}
+.btn-danger { background: var(--danger-red); color: var(--white); border: none; padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; }
+.btn-danger:hover { background: #B91C1C; }
 </style>
 </head>
 <body>
@@ -2135,7 +2599,25 @@ a:hover { text-decoration: underline; }
               <option>Centro de Custo</option>
               <option>Time</option>
             </select>
+            <!-- V8: CC multi-select filter -->
+            <div class="multi-filter-wrap" id="ccFilterWrap">
+              <button class="multi-filter-btn" id="ccFilterBtn" onclick="toggleMultiFilter('cc')">Centro de Custo <span class="chevron">▼</span></button>
+              <div class="multi-filter-dropdown" id="ccFilterDropdown">
+                <input type="text" class="multi-filter-search" placeholder="Buscar centro de custo..." oninput="filterMultiOptions('cc', this.value)">
+                <div id="ccFilterOptions"></div>
+              </div>
+            </div>
+            <!-- V8: Time multi-select filter -->
+            <div class="multi-filter-wrap" id="timeFilterWrap">
+              <button class="multi-filter-btn" id="timeFilterBtn" onclick="toggleMultiFilter('time')">Time <span class="chevron">▼</span></button>
+              <div class="multi-filter-dropdown" id="timeFilterDropdown">
+                <input type="text" class="multi-filter-search" placeholder="Buscar time..." oninput="filterMultiOptions('time', this.value)">
+                <div id="timeFilterOptions"></div>
+              </div>
+            </div>
           </div>
+          <!-- V8: Filter chips -->
+          <div class="filter-chips" id="filterChipsBar" style="display:none;"></div>
           <div class="view-toggle" role="radiogroup" aria-label="Modo de visualização">
             <button class="view-toggle-btn active" role="radio" aria-checked="true" onclick="switchView('cards')">Cards</button>
             <button class="view-toggle-btn" role="radio" aria-checked="false" onclick="switchView('table')">Tabela</button>
@@ -2189,30 +2671,49 @@ a:hover { text-decoration: underline; }
                 </div>
               </div>
 
-              <!-- Exceptions summary -->
+              <!-- Exceptions summary with checkboxes (V8 FEATURE 4 + 6) -->
               <div class="exceptions-summary">
-                <div class="exceptions-summary-title">Exceções ativas (18) — agrupadas por CC</div>
-                <div style="max-height:240px;overflow-y:auto;">
-                  <details style="margin-bottom:var(--spacing-xs);">
-                    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--gray-700);padding:var(--spacing-xs) 0;list-style:none;display:flex;align-items:center;gap:var(--spacing-sm);"><span style="color:var(--gray-400);font-size:10px;">▶</span> CC Vendas <span class="exception-badge exception-badge-cc" style="font-size:10px;">3 times</span></summary>
-                    <div style="padding-left:var(--spacing-lg);"><div class="exception-link"><a href="times.html">Vendas Enterprise: auto-aprovação R$ 8.000</a></div><div class="exception-link"><a href="times.html">Inside Sales: auto-aprovação R$ 3.000</a></div><div class="exception-link"><a href="times.html">Vendas Governo: CFO aprova > R$ 5.000</a></div></div>
-                  </details>
-                  <details style="margin-bottom:var(--spacing-xs);">
-                    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--gray-700);padding:var(--spacing-xs) 0;list-style:none;display:flex;align-items:center;gap:var(--spacing-sm);"><span style="color:var(--gray-400);font-size:10px;">▶</span> CC Marketing <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC + 2 times</span></summary>
-                    <div style="padding-left:var(--spacing-lg);"><div class="exception-link"><a href="centros-custo.html">CC Marketing: auto-aprovação R$ 5.000</a><span class="exception-badge exception-badge-cc">CC</span></div><div class="exception-link"><a href="times.html">Growth: categoria Eventos auto-aprovada</a></div><div class="exception-link"><a href="times.html">Performance: SaaS auto-aprovado R$ 3.000</a></div></div>
-                  </details>
-                  <details style="margin-bottom:var(--spacing-xs);">
-                    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--gray-700);padding:var(--spacing-xs) 0;list-style:none;display:flex;align-items:center;gap:var(--spacing-sm);"><span style="color:var(--gray-400);font-size:10px;">▶</span> CC Internacional <span class="exception-badge exception-badge-cc" style="font-size:10px;">3 CCs + 2 times</span></summary>
-                    <div style="padding-left:var(--spacing-lg);"><div class="exception-link"><a href="centros-custo.html">CC LATAM: auto-aprovação R$ 15.000</a><span class="exception-badge exception-badge-cc">CC</span></div><div class="exception-link"><a href="centros-custo.html">CC Europa: auto-aprovação R$ 20.000</a><span class="exception-badge exception-badge-cc">CC</span></div><div class="exception-link"><a href="centros-custo.html">CC EUA: auto-aprovação R$ 25.000</a><span class="exception-badge exception-badge-cc">CC</span></div><div class="exception-link"><a href="times.html">EUA Enterprise: auto-aprovação R$ 50.000</a></div><div class="exception-link"><a href="times.html">LATAM Comercial: auto-aprovação R$ 10.000</a></div></div>
-                  </details>
-                  <details style="margin-bottom:var(--spacing-xs);">
-                    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--gray-700);padding:var(--spacing-xs) 0;list-style:none;display:flex;align-items:center;gap:var(--spacing-sm);"><span style="color:var(--gray-400);font-size:10px;">▶</span> CC Diretoria <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC + 1 time</span></summary>
-                    <div style="padding-left:var(--spacing-lg);"><div class="exception-link"><a href="centros-custo.html">CC Diretoria: CFO aprova tudo</a><span class="exception-badge exception-badge-cc">CC</span></div><div class="exception-link"><a href="times.html">Time Diretoria: CFO aprova > R$ 5.000</a></div></div>
-                  </details>
-                  <details style="margin-bottom:var(--spacing-xs);">
-                    <summary style="cursor:pointer;font-size:13px;font-weight:600;color:var(--gray-700);padding:var(--spacing-xs) 0;list-style:none;display:flex;align-items:center;gap:var(--spacing-sm);"><span style="color:var(--gray-400);font-size:10px;">▶</span> CC Engenharia <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC + 2 times</span></summary>
-                    <div style="padding-left:var(--spacing-lg);"><div class="exception-link"><a href="centros-custo.html">CC Engenharia: SaaS auto-aprovado R$ 5.000</a><span class="exception-badge exception-badge-cc">CC</span></div><div class="exception-link"><a href="times.html">DevOps: ferramentas auto-aprovadas R$ 8.000</a></div><div class="exception-link"><a href="times.html">Engenharia IA: GPU/cloud auto-aprovado R$ 10.000</a></div></div>
-                  </details>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div class="exceptions-summary-title">Exceções ativas (18) — agrupadas por CC</div>
+                  <button class="btn btn-primary btn-sm" onclick="openExceptionSlideover('solicitacoes')">+ Nova exceção</button>
+                </div>
+                <div style="max-height:280px;overflow-y:auto;margin-top:var(--spacing-sm);">
+                  <!-- CC Vendas -->
+                  <div class="exc-checkbox-group">
+                    <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'sol-vendas')"> <strong>CC Vendas</strong> <span class="exception-badge exception-badge-cc" style="font-size:10px;">3 times</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-vendas"><input type="checkbox" onchange="updateBulkBar()"> Vendas Enterprise: auto-aprovação R$ 8.000 <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Regra diferente do CC Vendas</span></span></div>
+                    <div class="exc-checkbox-item" data-group="sol-vendas"><input type="checkbox" onchange="updateBulkBar()"> Inside Sales: auto-aprovação R$ 3.000 <span class="diverge-badge diverge-badge-follows">Segue CC<span class="diverge-tooltip">Segue a regra do CC Vendas</span></span></div>
+                    <div class="exc-checkbox-item" data-group="sol-vendas"><input type="checkbox" onchange="updateBulkBar()"> Vendas Governo: CFO aprova > R$ 5.000 <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Regra diferente do CC Vendas</span></span></div>
+                  </div>
+                  <!-- CC Marketing -->
+                  <div class="exc-checkbox-group">
+                    <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'sol-mkt')"> <strong>CC Marketing</strong> <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC + 2 times</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-mkt"><input type="checkbox" onchange="updateBulkBar()"> CC Marketing: auto-aprovação R$ 5.000 <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-mkt"><input type="checkbox" onchange="updateBulkBar()"> Growth: categoria Eventos auto-aprovada <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Growth diverge do CC Marketing</span></span></div>
+                    <div class="exc-checkbox-item" data-group="sol-mkt"><input type="checkbox" onchange="updateBulkBar()"> Performance: SaaS auto-aprovado R$ 3.000 <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Performance diverge do CC Marketing</span></span></div>
+                  </div>
+                  <!-- CC Internacional -->
+                  <div class="exc-checkbox-group">
+                    <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'sol-intl')"> <strong>CC Internacional</strong> <span class="exception-badge exception-badge-cc" style="font-size:10px;">3 CCs + 2 times</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-intl"><input type="checkbox" onchange="updateBulkBar()"> CC LATAM: auto-aprovação R$ 15.000 <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-intl"><input type="checkbox" onchange="updateBulkBar()"> CC Europa: auto-aprovação R$ 20.000 <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-intl"><input type="checkbox" onchange="updateBulkBar()"> CC EUA: auto-aprovação R$ 25.000 <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-intl"><input type="checkbox" onchange="updateBulkBar()"> EUA Enterprise: auto-aprovação R$ 50.000 <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Diverge do CC Internacional — EUA</span></span></div>
+                    <div class="exc-checkbox-item" data-group="sol-intl"><input type="checkbox" onchange="updateBulkBar()"> LATAM Comercial: auto-aprovação R$ 10.000 <span class="diverge-badge diverge-badge-follows">Segue CC<span class="diverge-tooltip">Segue a regra do CC Internacional — LATAM</span></span></div>
+                  </div>
+                  <!-- CC Diretoria -->
+                  <div class="exc-checkbox-group">
+                    <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'sol-dir')"> <strong>CC Diretoria</strong> <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC + 1 time</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-dir"><input type="checkbox" onchange="updateBulkBar()"> CC Diretoria: CFO aprova tudo <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-dir"><input type="checkbox" onchange="updateBulkBar()"> Time Diretoria: CFO aprova > R$ 5.000 <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Diretoria diverge do CC Diretoria</span></span></div>
+                  </div>
+                  <!-- CC Engenharia -->
+                  <div class="exc-checkbox-group">
+                    <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'sol-eng')"> <strong>CC Engenharia</strong> <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC + 2 times</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-eng"><input type="checkbox" onchange="updateBulkBar()"> CC Engenharia: SaaS auto-aprovado R$ 5.000 <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
+                    <div class="exc-checkbox-item" data-group="sol-eng"><input type="checkbox" onchange="updateBulkBar()"> DevOps: ferramentas auto-aprovadas R$ 8.000 <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time DevOps diverge do CC Engenharia</span></span></div>
+                    <div class="exc-checkbox-item" data-group="sol-eng"><input type="checkbox" onchange="updateBulkBar()"> Engenharia IA: GPU/cloud auto-aprovado R$ 10.000 <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Engenharia IA diverge do CC Engenharia</span></span></div>
+                  </div>
                 </div>
                 <div class="exceptions-count">18 exceções ativas · 82 CCs/times usando regra padrão</div>
               </div>
@@ -2260,14 +2761,18 @@ a:hover { text-decoration: underline; }
               <div class="audit-meta">Última edição: 20/03/2026 por André A. · <span class="audit-meta-ref">POL-2026-03-0016</span></div>
 
               <div class="exceptions-summary">
-                <div class="exceptions-summary-title">Exceções ativas (12)</div>
-                <div class="exception-link">
-                  <a href="centros-custo.html">CC Marketing: sem comprovante até R$ 200</a>
-                  <span class="exception-badge exception-badge-cc">Exceção CC</span>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div class="exceptions-summary-title">Exceções ativas (12)</div>
+                  <button class="btn btn-primary btn-sm" onclick="openExceptionSlideover('cartao')">+ Nova exceção</button>
                 </div>
-                <div class="exception-link">
-                  <a href="times.html">Time Marketing Digital: sem comprovante até R$ 200</a>
-                  <span class="exception-badge exception-badge-time">Exceção Time</span>
+                <div class="exc-checkbox-group">
+                  <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'cart-mkt')"> <strong>CC Marketing</strong></div>
+                  <div class="exc-checkbox-item" data-group="cart-mkt"><input type="checkbox" onchange="updateBulkBar()"> CC Marketing: sem comprovante até R$ 200 <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
+                  <div class="exc-checkbox-item" data-group="cart-mkt"><input type="checkbox" onchange="updateBulkBar()"> Marketing Digital: sem comprovante até R$ 200 <span class="diverge-badge diverge-badge-follows">Segue CC<span class="diverge-tooltip">Segue a regra do CC Marketing</span></span></div>
+                </div>
+                <div class="exc-checkbox-group">
+                  <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'cart-vendas')"> <strong>CC Vendas</strong></div>
+                  <div class="exc-checkbox-item" data-group="cart-vendas"><input type="checkbox" onchange="updateBulkBar()"> CC Vendas: comprovante > R$ 100 <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
                 </div>
                 <div class="exceptions-count">12 exceções ativas · 88 CCs/times usando regra padrão</div>
               </div>
@@ -2313,14 +2818,17 @@ a:hover { text-decoration: underline; }
               <div class="audit-meta">Última edição: 28/02/2026 por Martha P. · <span class="audit-meta-ref">POL-2026-02-0008</span></div>
 
               <div class="exceptions-summary">
-                <div class="exceptions-summary-title">Exceções ativas</div>
-                <div class="exception-link">
-                  <a href="times.html">Time Comercial: sem limite de reembolso viagem</a>
-                  <span class="exception-badge exception-badge-time">Exceção Time</span>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div class="exceptions-summary-title">Exceções ativas (8)</div>
+                  <button class="btn btn-primary btn-sm" onclick="openExceptionSlideover('reembolsos')">+ Nova exceção</button>
                 </div>
-                <div class="exception-link">
-                  <a href="times.html">Time Diretoria: sem limite mensal</a>
-                  <span class="exception-badge exception-badge-time">Exceção Time</span>
+                <div class="exc-checkbox-group">
+                  <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'reemb-vendas')"> <strong>CC Vendas</strong></div>
+                  <div class="exc-checkbox-item" data-group="reemb-vendas"><input type="checkbox" onchange="updateBulkBar()"> Time Comercial: sem limite de reembolso viagem <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Comercial diverge do CC Vendas</span></span></div>
+                </div>
+                <div class="exc-checkbox-group">
+                  <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'reemb-dir')"> <strong>CC Diretoria</strong></div>
+                  <div class="exc-checkbox-item" data-group="reemb-dir"><input type="checkbox" onchange="updateBulkBar()"> Time Diretoria: sem limite mensal <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Diretoria diverge do CC Diretoria</span></span></div>
                 </div>
                 <div class="exceptions-count">8 exceções ativas · 92 CCs/times usando regra padrão</div>
               </div>
@@ -2378,10 +2886,13 @@ a:hover { text-decoration: underline; }
               </div>
 
               <div class="exceptions-summary">
-                <div class="exceptions-summary-title">Exceções ativas</div>
-                <div class="exception-link">
-                  <a href="centros-custo.html">CC Internacional: hospedagem até R$ 2.000/noite</a>
-                  <span class="exception-badge exception-badge-cc">Exceção CC</span>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div class="exceptions-summary-title">Exceções ativas (7)</div>
+                  <button class="btn btn-primary btn-sm" onclick="openExceptionSlideover('viagens')">+ Nova exceção</button>
+                </div>
+                <div class="exc-checkbox-group">
+                  <div class="exc-checkbox-header"><input type="checkbox" onchange="toggleCCGroup(this, 'viag-intl')"> <strong>CC Internacional</strong></div>
+                  <div class="exc-checkbox-item" data-group="viag-intl"><input type="checkbox" onchange="updateBulkBar()"> CC Internacional: hospedagem até R$ 2.000/noite <span class="exception-badge exception-badge-cc" style="font-size:10px;">CC</span></div>
                 </div>
                 <div class="exceptions-count">7 exceções ativas · 93 CCs/times usando regra padrão</div>
               </div>
@@ -2521,7 +3032,7 @@ a:hover { text-decoration: underline; }
                   <td><span class="status-badge status-active">Ativo</span></td>
                   <td><span class="audit-meta-ref">POL-2026-02-0008</span></td>
                 </tr>
-                <tr>
+                <tr data-cc="Internacional" data-time="">
                   <td><strong>Solicitações</strong></td>
                   <td>Auto-aprovação R$ 10.000</td>
                   <td><span class="type-badge badge-agent">Agent</span></td>
@@ -2531,7 +3042,7 @@ a:hover { text-decoration: underline; }
                   <td><span class="status-badge status-active">Ativo</span></td>
                   <td><span class="audit-meta-ref">EXC-2026-03-0012</span></td>
                 </tr>
-                <tr>
+                <tr data-cc="Executivo" data-time="Diretoria">
                   <td><strong>Solicitações</strong></td>
                   <td>CFO aprova &gt; R$ 5.000</td>
                   <td><span class="type-badge badge-agent">Agent</span></td>
@@ -2541,9 +3052,126 @@ a:hover { text-decoration: underline; }
                   <td><span class="status-badge status-active">Ativo</span></td>
                   <td><span class="audit-meta-ref">EXC-2026-03-0008</span></td>
                 </tr>
+                <!-- V8 FEATURE 1+6: Additional exception rows with diverge badges -->
+                <tr data-cc="Marketing" data-time="">
+                  <td><strong>Solicitações</strong></td>
+                  <td>Auto-aprovação R$ 5.000</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-cc">CC Marketing</span></td>
+                  <td>Valor &le; R$ 5.000</td>
+                  <td>Auto-aprovar</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0025</span></td>
+                </tr>
+                <tr data-cc="Marketing" data-time="Growth">
+                  <td><strong>Solicitações</strong></td>
+                  <td>Escalar VP Marketing</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-time">Time Growth</span> <span class="diverge-badge diverge-badge-warning" title="Regra diferente do CC Marketing">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Growth tem regra diferente do CC Marketing (R$5k auto-aprovar)</span></span></td>
+                  <td>Valor &ge; R$ 3.000</td>
+                  <td>Escalar VP</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0026</span></td>
+                </tr>
+                <tr data-cc="Marketing" data-time="Performance">
+                  <td><strong>Solicitações</strong></td>
+                  <td>Escalar VP Marketing</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-time">Time Performance</span> <span class="diverge-badge diverge-badge-warning" title="Regra diferente do CC Marketing">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Performance tem regra diferente do CC Marketing (R$5k auto-aprovar)</span></span></td>
+                  <td>Valor &ge; R$ 3.000</td>
+                  <td>Escalar VP</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0027</span></td>
+                </tr>
+                <tr data-cc="Vendas" data-time="">
+                  <td><strong>Despesas Cartão</strong></td>
+                  <td>Comprovante &ge; R$ 100</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-cc">CC Vendas</span></td>
+                  <td>Valor &gt; R$ 100</td>
+                  <td>Exigir comprovante</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0028</span></td>
+                </tr>
+                <tr data-cc="Vendas" data-time="Enterprise">
+                  <td><strong>Solicitações</strong></td>
+                  <td>Auto-aprovação R$ 8.000</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-time">Time Enterprise</span> <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time Enterprise diverge do CC Vendas</span></span></td>
+                  <td>Valor &le; R$ 8.000</td>
+                  <td>Auto-aprovar</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0029</span></td>
+                </tr>
+                <tr data-cc="Vendas" data-time="Inside Sales">
+                  <td><strong>Solicitações</strong></td>
+                  <td>Auto-aprovação R$ 3.000</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-time">Time Inside Sales</span> <span class="diverge-badge diverge-badge-follows">Segue CC<span class="diverge-tooltip">Time Inside Sales segue a regra do CC Vendas</span></span></td>
+                  <td>Valor &le; R$ 3.000</td>
+                  <td>Auto-aprovar</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0030</span></td>
+                </tr>
+                <tr data-cc="Engenharia" data-time="">
+                  <td><strong>Solicitações</strong></td>
+                  <td>SaaS auto-aprovado R$ 5.000</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-cc">CC Engenharia</span></td>
+                  <td>Categoria = SaaS &amp; Valor &le; R$ 5.000</td>
+                  <td>Auto-aprovar</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0031</span></td>
+                </tr>
+                <tr data-cc="Engenharia" data-time="DevOps">
+                  <td><strong>Solicitações</strong></td>
+                  <td>Ferramentas auto-aprovadas R$ 8.000</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-time">Time DevOps</span> <span class="diverge-badge diverge-badge-warning">&#9888;&#65039; Diverge do CC<span class="diverge-tooltip">Time DevOps diverge do CC Engenharia (SaaS R$5k)</span></span></td>
+                  <td>Categoria = Ferramentas &amp; Valor &le; R$ 8.000</td>
+                  <td>Auto-aprovar</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0032</span></td>
+                </tr>
+                <tr data-cc="Internacional" data-time="">
+                  <td><strong>Solicitações</strong></td>
+                  <td>Auto-aprovação R$ 10.000</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-cc">CC Internacional</span></td>
+                  <td>Valor &le; R$ 10.000</td>
+                  <td>Auto-aprovar</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0012</span></td>
+                </tr>
+                <tr data-cc="Internacional" data-time="">
+                  <td><strong>Viagens</strong></td>
+                  <td>Hospedagem até R$ 2.000/noite</td>
+                  <td><span class="type-badge badge-agent">Agent</span></td>
+                  <td><span class="scope-badge scope-cc">CC Internacional</span></td>
+                  <td>Valor hospedagem &le; R$ 2.000</td>
+                  <td>Auto-aprovar</td>
+                  <td><span class="status-badge status-active">Ativo</span></td>
+                  <td><span class="audit-meta-ref">EXC-2026-03-0033</span></td>
+                </tr>
               </tbody>
             </table>
-            <div class="table-footer">22 regras gerais + 45 exceções de time + 12 exceções de CC · 8 Agent · 10 Flags · 4 Confidencial · Último audit: POL-2026-03-0019</div>
+            <!-- V8: FEATURE 2 — Pagination footer -->
+            <div class="table-footer-v8" id="tableFooterV8">
+              <span id="tableFooterInfo">Mostrando 1–50 de 79 regras</span>
+              <div style="display:flex;align-items:center;gap:var(--spacing-sm);">
+                <span class="page-size-btns">
+                  <button class="page-size-btn" onclick="setTablePageSize(20)">20</button>
+                  <button class="page-size-btn active" onclick="setTablePageSize(50)">50</button>
+                  <button class="page-size-btn" onclick="setTablePageSize('all')">Todos</button>
+                </span>
+                <span class="pag-nav" id="tablePagNav">
+                  <button class="pag-nav-btn" disabled onclick="changeTablePage(-1)">&larr; Anterior</button>
+                  <button class="pag-nav-btn active">1</button>
+                  <button class="pag-nav-btn" onclick="changeTablePage(1)">2</button>
+                  <button class="pag-nav-btn" onclick="changeTablePage(1)">Pr&oacute;xima &rarr;</button>
+                </span>
+              </div>
+            </div>
           </div>
 
           <!-- Mobile cards -->
@@ -2978,6 +3606,51 @@ a:hover { text-decoration: underline; }
       </div>
     </div>
 
+    <!-- V8 FEATURE 5: Inheritance Chain -->
+    <div class="slideover-section">
+      <div class="inheritance-section">
+        <button class="inheritance-toggle" id="inhToggle" onclick="toggleInheritance()">
+          Cadeia de Herança <span class="inh-chevron">▼</span>
+        </button>
+        <div class="inheritance-body" id="inhBody">
+          <select class="inh-flow-select" id="inhFlowSelect" onchange="updateInheritanceChain()">
+            <option value="solicitacoes">Solicitações</option>
+            <option value="cartao">Despesas de Cartão</option>
+            <option value="reembolsos">Reembolsos</option>
+            <option value="viagens">Viagens</option>
+          </select>
+          <div id="inhChainContent">
+            <!-- Geral level -->
+            <div class="inh-level inh-level-geral">
+              <div class="inh-level-title">Geral (Empresa)</div>
+              <div class="inh-level-rule overridden">Valor &ge; R$ 2.000 &rarr; Escalar para gestor</div>
+              <div class="inh-level-rule overridden">Valor &lt; R$ 2.000 &rarr; Auto-aprovar</div>
+            </div>
+            <div class="inh-connector">
+              <div class="inh-connector-line"></div>
+              <div class="inh-connector-text">sobrescrito por &#9660;</div>
+              <div class="inh-connector-line"></div>
+            </div>
+            <!-- CC level -->
+            <div class="inh-level inh-level-cc">
+              <div class="inh-level-title">CC Marketing</div>
+              <div class="inh-level-rule overridden">Valor &le; R$ 5.000 &rarr; Auto-aprovar (Diretor Marketing)</div>
+            </div>
+            <div class="inh-connector">
+              <div class="inh-connector-line"></div>
+              <div class="inh-connector-text">sobrescrito por &#9660;</div>
+              <div class="inh-connector-line"></div>
+            </div>
+            <!-- Time level (active) -->
+            <div class="inh-level inh-level-time">
+              <div class="inh-level-title">Time Growth (CC Marketing)</div>
+              <div class="inh-level-rule effective">Valor &ge; R$ 3.000 &rarr; Escalar VP Marketing <span class="inh-effective-badge">Regra efetiva</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Confidential -->
     <div class="slideover-section">
       <div class="slideover-section-title">🔒 Regras Confidenciais</div>
@@ -2990,6 +3663,11 @@ a:hover { text-decoration: underline; }
           <label class="visibility-checkbox"><input type="checkbox"> Gestor</label>
         </div>
       </div>
+    </div>
+
+    <!-- V8: Save button that triggers Impact Preview -->
+    <div class="slideover-section" style="padding-top:0;">
+      <button class="btn btn-primary" style="width:100%;" onclick="closeSlideover();openImpactModal()">Salvar alterações</button>
     </div>
 
   </div>
@@ -3149,6 +3827,169 @@ a:hover { text-decoration: underline; }
         <button class="btn btn-primary btn-sm" onclick="showToast('Sugestão aplicada.','success')">Aplicar</button>
         <button class="btn btn-ghost btn-sm">Ignorar</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     V8 FEATURE 3: Exception Creation Slide-over
+     ============================================ -->
+<div class="exception-slideover-overlay" id="excSlideoverOverlay" onclick="closeExceptionSlideover()"></div>
+<div class="exception-slideover" id="excSlideover" role="dialog" aria-modal="true" aria-label="Criar exceção">
+  <div class="exc-so-header">
+    <div>
+      <div class="exc-so-title" id="excSoTitle">Nova Exceção — Solicitações</div>
+      <div class="exc-so-subtitle">Selecione os times ou CCs e configure a exceção</div>
+    </div>
+    <button class="exc-so-close" onclick="closeExceptionSlideover()">&#10005;</button>
+  </div>
+  <div class="exc-so-body">
+    <div class="exc-step-indicator">
+      <div class="exc-step-dot active" id="excDot1">1</div>
+      <div class="exc-step-dot" id="excDot2">2</div>
+      <div class="exc-step-dot" id="excDot3">3</div>
+    </div>
+
+    <!-- Step 1: Select targets -->
+    <div class="exc-step active" id="excStep1">
+      <div style="font-size:14px;font-weight:600;color:var(--gray-800);margin-bottom:var(--spacing-md);">Tipo de escopo</div>
+      <div class="exc-radio-group">
+        <div class="exc-radio-option selected" onclick="selectExcType(this, 'cc')">Centro de Custo</div>
+        <div class="exc-radio-option" onclick="selectExcType(this, 'time')">Time</div>
+      </div>
+      <input type="text" class="multi-filter-search" placeholder="Buscar..." style="width:100%;margin:0 0 var(--spacing-sm) 0;" oninput="filterExcOptions(this.value)">
+      <div id="excOptionsList" style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-md);"></div>
+      <div class="exc-selected-chips" id="excSelectedChips"></div>
+    </div>
+
+    <!-- Step 2: Workflow -->
+    <div class="exc-step" id="excStep2">
+      <div class="exc-banner" id="excBanner">Esta exceção será aplicada a 0 times</div>
+      <div style="font-size:14px;font-weight:600;color:var(--gray-800);margin-bottom:var(--spacing-md);">Configurar Workflow</div>
+      <div class="form-group" style="margin-bottom:var(--spacing-md);">
+        <label class="form-label">Aprovador</label>
+        <select class="form-input"><option>Gestor direto</option><option>Diretor da área</option><option>VP</option><option>CFO</option></select>
+      </div>
+      <div class="form-group" style="margin-bottom:var(--spacing-md);">
+        <label class="form-label">Valor mínimo para escalar (R$)</label>
+        <input type="text" class="form-input" value="3.000" placeholder="Ex: 5.000">
+      </div>
+      <div class="form-group" style="margin-bottom:var(--spacing-md);">
+        <label class="form-label">Ação</label>
+        <select class="form-input"><option>Auto-aprovar</option><option>Escalar</option><option>Bloquear</option><option>Alertar gestor</option></select>
+      </div>
+    </div>
+
+    <!-- Step 3: Confirmation -->
+    <div class="exc-step" id="excStep3">
+      <div style="font-size:14px;font-weight:600;color:var(--gray-800);margin-bottom:var(--spacing-md);">Confirmar exceção</div>
+      <div class="exc-diff-item"><span class="exc-diff-label">Política</span><span class="exc-diff-value" id="excConfPolicy">Solicitações</span></div>
+      <div class="exc-diff-item"><span class="exc-diff-label">Escopo</span><span class="exc-diff-value" id="excConfScope">0 times selecionados</span></div>
+      <div class="exc-diff-item"><span class="exc-diff-label">Aprovador</span><span class="exc-diff-value">VP</span></div>
+      <div class="exc-diff-item"><span class="exc-diff-label">Valor mínimo</span><span class="exc-diff-value">R$ 3.000</span></div>
+      <div class="exc-diff-item"><span class="exc-diff-label">Ação</span><span class="exc-diff-value">Escalar</span></div>
+    </div>
+  </div>
+  <div class="exc-so-footer">
+    <button class="btn btn-secondary" id="excPrevBtn" style="display:none;" onclick="excPrevStep()">Voltar</button>
+    <button class="btn btn-primary" id="excNextBtn" onclick="excNextStep()">Próximo</button>
+  </div>
+</div>
+
+<!-- V8 FEATURE 4: Bulk Action Bar -->
+<div class="bulk-action-bar" id="bulkActionBar">
+  <span class="bulk-count" id="bulkCount">&#9745; 0 exceções selecionadas</span>
+  <button class="btn-bulk" onclick="openBulkEditModal()">Editar selecionados</button>
+  <button class="btn-bulk btn-bulk-danger" onclick="openBulkDeleteModal()">Remover</button>
+  <button class="btn-bulk-close" onclick="clearBulkSelection()">&#10005;</button>
+</div>
+
+<!-- V8 FEATURE 4: Bulk Edit Modal -->
+<div class="bulk-edit-modal-overlay" id="bulkEditModal" onclick="if(event.target===this)closeBulkEditModal()">
+  <div class="bulk-edit-modal" onclick="event.stopPropagation()">
+    <div class="bulk-edit-modal-header">
+      <div>
+        <div class="bulk-edit-modal-title">Editar exceções selecionadas</div>
+        <div style="font-size:13px;color:var(--gray-500);margin-top:2px;" id="bulkEditCount">0 exceções</div>
+      </div>
+      <button class="impact-modal-close" onclick="closeBulkEditModal()">&#10005;</button>
+    </div>
+    <div class="bulk-edit-modal-body">
+      <div class="bulk-edit-field">
+        <label>Aprovador</label>
+        <select><option value="">Manter atual</option><option>Gestor direto</option><option>Diretor</option><option>VP</option><option>CFO</option></select>
+      </div>
+      <div class="bulk-edit-field">
+        <label>Valor mínimo (R$)</label>
+        <input type="text" placeholder="Deixe vazio para manter">
+      </div>
+      <div class="bulk-edit-field">
+        <label>Ação</label>
+        <select><option value="">Manter atual</option><option>Auto-aprovar</option><option>Escalar</option><option>Bloquear</option><option>Alertar gestor</option></select>
+      </div>
+    </div>
+    <div class="bulk-edit-modal-footer">
+      <button class="btn btn-secondary" onclick="closeBulkEditModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeBulkEditModal();clearBulkSelection();showToast('Exceções atualizadas com sucesso!','success')">Salvar alterações</button>
+    </div>
+  </div>
+</div>
+
+<!-- V8 FEATURE 4: Bulk Delete Confirmation Modal -->
+<div class="bulk-edit-modal-overlay" id="bulkDeleteModal" onclick="if(event.target===this)closeBulkDeleteModal()">
+  <div class="bulk-edit-modal delete-confirm-modal" onclick="event.stopPropagation()">
+    <div class="bulk-edit-modal-header">
+      <div><div class="bulk-edit-modal-title">Remover exceções</div></div>
+      <button class="impact-modal-close" onclick="closeBulkDeleteModal()">&#10005;</button>
+    </div>
+    <div class="bulk-edit-modal-body">
+      <div class="delete-warning">&#9888;&#65039; Essa ação é irreversível. Os times e CCs afetados voltarão a seguir a regra geral.</div>
+      <p style="font-size:13px;color:var(--gray-600);">Você está prestes a remover <strong id="bulkDeleteCount">0</strong> exceções selecionadas.</p>
+    </div>
+    <div class="bulk-edit-modal-footer">
+      <button class="btn btn-secondary" onclick="closeBulkDeleteModal()">Cancelar</button>
+      <button class="btn btn-danger" onclick="closeBulkDeleteModal();clearBulkSelection();showToast('Exceções removidas com sucesso.','success')">Remover exceções</button>
+    </div>
+  </div>
+</div>
+
+<!-- V8 FEATURE 7: Impact Preview Modal -->
+<div class="impact-modal-overlay" id="impactModal" onclick="if(event.target===this)closeImpactModal()">
+  <div class="impact-modal" onclick="event.stopPropagation()">
+    <div class="impact-modal-header">
+      <div>
+        <div class="impact-modal-title">Impacto da alteração</div>
+        <div class="impact-modal-subtitle">Visualize quais times e CCs serão afetados</div>
+      </div>
+      <button class="impact-modal-close" onclick="closeImpactModal()">&#10005;</button>
+    </div>
+    <div class="impact-modal-body">
+      <div class="impact-summary">
+        <div class="impact-stat impact-stat-affected">
+          <div class="impact-stat-number">82</div>
+          <div class="impact-stat-label">Times/CCs afetados</div>
+        </div>
+        <div class="impact-stat impact-stat-unaffected">
+          <div class="impact-stat-number">18</div>
+          <div class="impact-stat-label">Não afetados (com exceção)</div>
+        </div>
+      </div>
+      <div class="impact-detail-section impact-detail-affected">
+        <div class="impact-detail-title" onclick="this.nextElementSibling.classList.toggle('open')">&#9989; 82 times/CCs afetados (clique para expandir)</div>
+        <div class="impact-detail-list">
+          Marketing (Growth, Performance, Conteúdo, SEO, Branding, Eventos) · Engenharia (Backend, Frontend, Mobile, QA, Platform) · Produto (Discovery, Delivery, Analytics, UX Research) · Design (Brand, Product, Motion, Design Ops) · RH (Recrutamento, People, DHO, Benefícios, Admin RH) · Financeiro (Contas a Pagar, Tesouraria, FP&amp;A, Auditoria Interna) · Jurídico (Contratos, Trabalhista, Compliance Legal, Societário) · Administrativo (Compras, Patrimônio, Facilities Admin) · Operações (NOC, Supply Chain, Qualidade, Processos) · Suporte (N1, N2, N3, Customer Success, Implantação) · Logística (Distribuição, Transporte, Estoque, Last Mile) · Compliance (Auditoria, Riscos, Controles, LGPD) · Facilities (Manutenção, Limpeza, Segurança, Recepção) · Data &amp; Analytics (BI, Data Engineering, Data Science, ML Ops)
+        </div>
+      </div>
+      <div class="impact-detail-section impact-detail-unaffected">
+        <div class="impact-detail-title" onclick="this.nextElementSibling.classList.toggle('open')">&#9888;&#65039; 18 times/CCs não afetados — possuem exceção (clique para expandir)</div>
+        <div class="impact-detail-list">
+          CC Vendas (Enterprise, Inside Sales, Governo) · CC Internacional (LATAM, Europa, EUA, EUA Enterprise, LATAM Comercial) · CC Diretoria (Time Diretoria) · CC Engenharia (DevOps, Engenharia IA) · CC Marketing (Growth, Performance)
+        </div>
+      </div>
+    </div>
+    <div class="impact-modal-footer">
+      <button class="btn btn-secondary" onclick="closeImpactModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="closeImpactModal();showToast('Alteração salva com sucesso!','success')">Confirmar e salvar</button>
     </div>
   </div>
 </div>
@@ -3554,6 +4395,497 @@ function renderAuditTrail() {
 
   document.getElementById('auditPag').innerHTML = '<span>Mostrando ' + (start+1) + '–' + Math.min(start+A_PAGE_SIZE,total) + ' de ' + total + '</span><div class="pag-buttons"><button class="btn btn-ghost btn-sm" onclick="aPage--;renderAuditTrail()"' + (aPage<=1?' disabled':'') + '>←</button><button class="btn btn-ghost btn-sm" onclick="aPage++;renderAuditTrail()"' + (aPage>=totalPages?' disabled':'') + '>→</button></div>';
 }
+
+// ========================================================================
+// V8 FEATURE 1: CC/Time Multi-select Filters
+// ========================================================================
+var ccTeamsMap = {
+  'Marketing': ['Growth', 'Performance', 'Conteúdo', 'SEO', 'Branding', 'Eventos'],
+  'Vendas': ['Inside Sales', 'Field Sales', 'Pré-vendas', 'Enterprise', 'SDR', 'Partnerships'],
+  'Engenharia': ['Backend', 'Frontend', 'Mobile', 'QA', 'DevOps', 'Platform'],
+  'Infraestrutura': ['Cloud', 'Redes', 'Segurança TI', 'Datacenter', 'SRE'],
+  'Data & Analytics': ['BI', 'Data Engineering', 'Data Science', 'ML Ops'],
+  'Produto': ['Discovery', 'Delivery', 'Analytics', 'UX Research'],
+  'Design': ['Brand', 'Product', 'Motion', 'Design Ops'],
+  'RH': ['Recrutamento', 'People', 'DHO', 'Benefícios', 'Admin RH'],
+  'Financeiro': ['Contas a Pagar', 'Tesouraria', 'FP&A', 'Auditoria Interna'],
+  'Jurídico': ['Contratos', 'Trabalhista', 'Compliance Legal', 'Societário'],
+  'Administrativo': ['Compras', 'Patrimônio', 'Facilities Admin'],
+  'Operações': ['NOC', 'Supply Chain', 'Qualidade', 'Processos'],
+  'Suporte': ['N1', 'N2', 'N3', 'Customer Success', 'Implantação'],
+  'Logística': ['Distribuição', 'Transporte', 'Estoque', 'Last Mile'],
+  'Internacional': ['LATAM', 'Europa', 'EUA', 'Ásia', 'MENA'],
+  'Executivo': ['C-Level', 'Board', 'Assessoria'],
+  'Compliance': ['Auditoria', 'Riscos', 'Controles', 'LGPD'],
+  'Facilities': ['Manutenção', 'Limpeza', 'Segurança', 'Recepção']
+};
+
+var selectedCCs = [];
+var selectedTimes = [];
+
+function buildCCOptions() {
+  var container = document.getElementById('ccFilterOptions');
+  var html = '';
+  Object.keys(ccTeamsMap).forEach(function(cc) {
+    html += '<label class="multi-filter-item" data-name="' + cc + '"><input type="checkbox" value="' + cc + '" onchange="onCCFilterChange()"> ' + cc + '</label>';
+  });
+  container.innerHTML = html;
+}
+
+function buildTimeOptions() {
+  var container = document.getElementById('timeFilterOptions');
+  var html = '';
+  var filteredCCs = selectedCCs.length > 0 ? selectedCCs : Object.keys(ccTeamsMap);
+  filteredCCs.forEach(function(cc) {
+    if (!ccTeamsMap[cc]) return;
+    html += '<div class="multi-filter-group-label">' + cc + '</div>';
+    html += '<label class="multi-filter-item select-all" data-cc="' + cc + '"><input type="checkbox" onchange="selectAllTimesOfCC(this, \'' + cc + '\')"> Selecionar todos do CC ' + cc + '</label>';
+    ccTeamsMap[cc].forEach(function(team) {
+      html += '<label class="multi-filter-item" data-name="' + team + '" data-cc="' + cc + '"><input type="checkbox" value="' + team + '" data-cc="' + cc + '" onchange="onTimeFilterChange()"> ' + team + '</label>';
+    });
+  });
+  container.innerHTML = html;
+  // Re-check previously selected
+  selectedTimes.forEach(function(t) {
+    var cb = container.querySelector('input[value="' + t + '"]');
+    if (cb) cb.checked = true;
+  });
+}
+
+function toggleMultiFilter(type) {
+  var dd = document.getElementById(type + 'FilterDropdown');
+  var isOpen = dd.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.multi-filter-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+  if (!isOpen) dd.classList.add('open');
+}
+
+function filterMultiOptions(type, query) {
+  var container = document.getElementById(type + 'FilterOptions');
+  query = query.toLowerCase();
+  container.querySelectorAll('.multi-filter-item:not(.select-all)').forEach(function(item) {
+    var name = (item.getAttribute('data-name') || '').toLowerCase();
+    item.style.display = name.indexOf(query) >= 0 ? '' : 'none';
+  });
+}
+
+function onCCFilterChange() {
+  selectedCCs = [];
+  document.querySelectorAll('#ccFilterOptions input:checked').forEach(function(cb) {
+    selectedCCs.push(cb.value);
+  });
+  var btn = document.getElementById('ccFilterBtn');
+  if (selectedCCs.length > 0) {
+    btn.classList.add('has-selection');
+    btn.innerHTML = 'CC (' + selectedCCs.length + ') <span class="chevron">▼</span>';
+  } else {
+    btn.classList.remove('has-selection');
+    btn.innerHTML = 'Centro de Custo <span class="chevron">▼</span>';
+  }
+  buildTimeOptions();
+  renderFilterChips();
+  applyTableFilters();
+}
+
+function onTimeFilterChange() {
+  selectedTimes = [];
+  document.querySelectorAll('#timeFilterOptions input[value]:checked').forEach(function(cb) {
+    if (cb.value) selectedTimes.push(cb.value);
+  });
+  var btn = document.getElementById('timeFilterBtn');
+  if (selectedTimes.length > 0) {
+    btn.classList.add('has-selection');
+    btn.innerHTML = 'Time (' + selectedTimes.length + ') <span class="chevron">▼</span>';
+  } else {
+    btn.classList.remove('has-selection');
+    btn.innerHTML = 'Time <span class="chevron">▼</span>';
+  }
+  renderFilterChips();
+  applyTableFilters();
+}
+
+function selectAllTimesOfCC(cb, cc) {
+  var container = document.getElementById('timeFilterOptions');
+  container.querySelectorAll('input[data-cc="' + cc + '"]').forEach(function(input) {
+    input.checked = cb.checked;
+  });
+  onTimeFilterChange();
+}
+
+function renderFilterChips() {
+  var bar = document.getElementById('filterChipsBar');
+  if (selectedCCs.length === 0 && selectedTimes.length === 0) {
+    bar.style.display = 'none';
+    return;
+  }
+  bar.style.display = 'flex';
+  var html = '';
+  selectedCCs.forEach(function(cc) {
+    html += '<span class="filter-chip">CC: ' + cc + ' <span class="filter-chip-remove" onclick="removeCCFilter(\'' + cc + '\')">&#10005;</span></span>';
+  });
+  selectedTimes.forEach(function(t) {
+    html += '<span class="filter-chip">Time: ' + t + ' <span class="filter-chip-remove" onclick="removeTimeFilter(\'' + t + '\')">&#10005;</span></span>';
+  });
+  html += '<button class="filter-clear-all" onclick="clearAllFilters()">Limpar todos os filtros</button>';
+  bar.innerHTML = html;
+}
+
+function removeCCFilter(cc) {
+  var cb = document.querySelector('#ccFilterOptions input[value="' + cc + '"]');
+  if (cb) cb.checked = false;
+  onCCFilterChange();
+}
+
+function removeTimeFilter(t) {
+  var cb = document.querySelector('#timeFilterOptions input[value="' + t + '"]');
+  if (cb) cb.checked = false;
+  onTimeFilterChange();
+}
+
+function clearAllFilters() {
+  document.querySelectorAll('#ccFilterOptions input:checked').forEach(function(cb) { cb.checked = false; });
+  document.querySelectorAll('#timeFilterOptions input:checked').forEach(function(cb) { cb.checked = false; });
+  selectedCCs = [];
+  selectedTimes = [];
+  document.getElementById('ccFilterBtn').classList.remove('has-selection');
+  document.getElementById('ccFilterBtn').innerHTML = 'Centro de Custo <span class="chevron">▼</span>';
+  document.getElementById('timeFilterBtn').classList.remove('has-selection');
+  document.getElementById('timeFilterBtn').innerHTML = 'Time <span class="chevron">▼</span>';
+  renderFilterChips();
+  applyTableFilters();
+  buildTimeOptions();
+}
+
+function applyTableFilters() {
+  var rows = document.querySelectorAll('.data-table tbody tr');
+  rows.forEach(function(row) {
+    var cc = row.getAttribute('data-cc') || '';
+    var time = row.getAttribute('data-time') || '';
+    var show = true;
+    if (selectedCCs.length > 0 && cc) {
+      show = selectedCCs.indexOf(cc) >= 0;
+    }
+    if (show && selectedTimes.length > 0 && time) {
+      show = selectedTimes.indexOf(time) >= 0;
+    }
+    // General rules (no data-cc) always show unless filter active and row has scope
+    if (!cc && (selectedCCs.length > 0 || selectedTimes.length > 0)) {
+      show = true; // general rules always visible
+    }
+    row.style.display = show ? '' : 'none';
+  });
+  updateTableFooter();
+}
+
+// Close multi-filter dropdowns on outside click
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.multi-filter-wrap')) {
+    document.querySelectorAll('.multi-filter-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+  }
+});
+
+// Initialize on load
+buildCCOptions();
+buildTimeOptions();
+
+// ========================================================================
+// V8 FEATURE 2: Pagination
+// ========================================================================
+var tablePageSize = 50;
+var tableCurrentPage = 1;
+
+function setTablePageSize(size) {
+  tablePageSize = size === 'all' ? 9999 : size;
+  tableCurrentPage = 1;
+  document.querySelectorAll('.page-size-btn').forEach(function(b) { b.classList.remove('active'); });
+  event.target.classList.add('active');
+  updateTableFooter();
+}
+
+function changeTablePage(delta) {
+  tableCurrentPage += delta;
+  updateTableFooter();
+}
+
+function updateTableFooter() {
+  var rows = document.querySelectorAll('.data-table tbody tr');
+  var visibleRows = [];
+  rows.forEach(function(r) { if (r.style.display !== 'none') visibleRows.push(r); });
+  var total = visibleRows.length;
+  var totalPages = Math.ceil(total / tablePageSize) || 1;
+  if (tableCurrentPage > totalPages) tableCurrentPage = totalPages;
+  if (tableCurrentPage < 1) tableCurrentPage = 1;
+
+  var start = (tableCurrentPage - 1) * tablePageSize;
+  var end = Math.min(start + tablePageSize, total);
+
+  // Show/hide rows for pagination
+  visibleRows.forEach(function(r, i) {
+    r.style.display = (i >= start && i < end) ? '' : 'none';
+  });
+  // But re-show filtered-out rows should stay hidden — we rely on the filter already hiding them
+
+  var info = document.getElementById('tableFooterInfo');
+  info.textContent = 'Mostrando ' + (start + 1) + '–' + end + ' de ' + total + ' regras';
+
+  var navHtml = '<button class="pag-nav-btn" onclick="changeTablePage(-1)"' + (tableCurrentPage <= 1 ? ' disabled' : '') + '>&larr; Anterior</button>';
+  for (var p = 1; p <= totalPages; p++) {
+    navHtml += '<button class="pag-nav-btn' + (p === tableCurrentPage ? ' active' : '') + '" onclick="tableCurrentPage=' + p + ';updateTableFooter()">' + p + '</button>';
+  }
+  navHtml += '<button class="pag-nav-btn" onclick="changeTablePage(1)"' + (tableCurrentPage >= totalPages ? ' disabled' : '') + '>Pr&oacute;xima &rarr;</button>';
+  document.getElementById('tablePagNav').innerHTML = navHtml;
+}
+
+// ========================================================================
+// V8 FEATURE 3: Multi-select Exception Creation Slide-over
+// ========================================================================
+var excCurrentStep = 1;
+var excSelectedItems = [];
+var excType = 'cc';
+var excPolicy = 'solicitacoes';
+
+function openExceptionSlideover(policy) {
+  excPolicy = policy;
+  var titles = { solicitacoes: 'Solicitações', cartao: 'Despesas de Cartão', reembolsos: 'Reembolsos', viagens: 'Viagens' };
+  document.getElementById('excSoTitle').textContent = 'Nova Exceção — ' + (titles[policy] || policy);
+  document.getElementById('excConfPolicy').textContent = titles[policy] || policy;
+  excCurrentStep = 1;
+  excSelectedItems = [];
+  updateExcSteps();
+  buildExcOptions();
+  document.getElementById('excSlideoverOverlay').classList.add('active');
+  document.getElementById('excSlideover').classList.add('open');
+}
+
+function closeExceptionSlideover() {
+  document.getElementById('excSlideoverOverlay').classList.remove('active');
+  document.getElementById('excSlideover').classList.remove('open');
+}
+
+function selectExcType(el, type) {
+  excType = type;
+  document.querySelectorAll('.exc-radio-option').forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  excSelectedItems = [];
+  buildExcOptions();
+  updateExcChips();
+}
+
+function buildExcOptions() {
+  var container = document.getElementById('excOptionsList');
+  var html = '';
+  if (excType === 'cc') {
+    Object.keys(ccTeamsMap).forEach(function(cc) {
+      var checked = excSelectedItems.indexOf(cc) >= 0 ? ' checked' : '';
+      html += '<label class="multi-filter-item" data-name="' + cc + '"><input type="checkbox" value="' + cc + '"' + checked + ' onchange="onExcItemToggle(this)"> ' + cc + '</label>';
+    });
+  } else {
+    Object.keys(ccTeamsMap).forEach(function(cc) {
+      html += '<div class="multi-filter-group-label">' + cc + '</div>';
+      html += '<label class="multi-filter-item select-all" data-cc="' + cc + '"><input type="checkbox" onchange="selectAllExcTimesOfCC(this, \'' + cc + '\')"> Selecionar todos do CC ' + cc + '</label>';
+      ccTeamsMap[cc].forEach(function(team) {
+        var checked = excSelectedItems.indexOf(team) >= 0 ? ' checked' : '';
+        html += '<label class="multi-filter-item" data-name="' + team + '" data-cc="' + cc + '"><input type="checkbox" value="' + team + '"' + checked + ' onchange="onExcItemToggle(this)"> ' + team + '</label>';
+      });
+    });
+  }
+  container.innerHTML = html;
+}
+
+function filterExcOptions(query) {
+  query = query.toLowerCase();
+  document.querySelectorAll('#excOptionsList .multi-filter-item:not(.select-all)').forEach(function(item) {
+    var name = (item.getAttribute('data-name') || '').toLowerCase();
+    item.style.display = name.indexOf(query) >= 0 ? '' : 'none';
+  });
+}
+
+function onExcItemToggle(cb) {
+  if (cb.checked) {
+    if (excSelectedItems.indexOf(cb.value) < 0) excSelectedItems.push(cb.value);
+  } else {
+    excSelectedItems = excSelectedItems.filter(function(v) { return v !== cb.value; });
+  }
+  updateExcChips();
+}
+
+function selectAllExcTimesOfCC(cb, cc) {
+  document.querySelectorAll('#excOptionsList input[value]').forEach(function(input) {
+    var parent = input.closest('.multi-filter-item');
+    if (parent && parent.getAttribute('data-cc') === cc) {
+      input.checked = cb.checked;
+      onExcItemToggle(input);
+    }
+  });
+}
+
+function updateExcChips() {
+  var container = document.getElementById('excSelectedChips');
+  container.innerHTML = excSelectedItems.map(function(item) {
+    return '<span class="filter-chip">' + item + ' <span class="filter-chip-remove" onclick="removeExcItem(\'' + item + '\')">&#10005;</span></span>';
+  }).join('');
+}
+
+function removeExcItem(item) {
+  excSelectedItems = excSelectedItems.filter(function(v) { return v !== item; });
+  var cb = document.querySelector('#excOptionsList input[value="' + item + '"]');
+  if (cb) cb.checked = false;
+  updateExcChips();
+}
+
+function excNextStep() {
+  if (excCurrentStep < 3) {
+    excCurrentStep++;
+    updateExcSteps();
+    if (excCurrentStep === 2) {
+      document.getElementById('excBanner').textContent = 'Esta exceção será aplicada a ' + excSelectedItems.length + ' ' + (excType === 'cc' ? 'centros de custo' : 'times');
+    }
+    if (excCurrentStep === 3) {
+      document.getElementById('excConfScope').textContent = excSelectedItems.length + ' ' + (excType === 'cc' ? 'CCs' : 'times') + ' selecionados';
+      document.getElementById('excNextBtn').textContent = 'Confirmar e criar';
+    }
+  } else {
+    // Save — trigger impact modal
+    closeExceptionSlideover();
+    openImpactModal();
+  }
+}
+
+function excPrevStep() {
+  if (excCurrentStep > 1) {
+    excCurrentStep--;
+    updateExcSteps();
+    document.getElementById('excNextBtn').textContent = 'Próximo';
+  }
+}
+
+function updateExcSteps() {
+  for (var i = 1; i <= 3; i++) {
+    var step = document.getElementById('excStep' + i);
+    var dot = document.getElementById('excDot' + i);
+    step.classList.toggle('active', i === excCurrentStep);
+    dot.classList.remove('active', 'done');
+    if (i === excCurrentStep) dot.classList.add('active');
+    else if (i < excCurrentStep) dot.classList.add('done');
+  }
+  document.getElementById('excPrevBtn').style.display = excCurrentStep > 1 ? '' : 'none';
+}
+
+// ========================================================================
+// V8 FEATURE 4: Bulk Actions
+// ========================================================================
+function toggleCCGroup(headerCheckbox, group) {
+  var items = document.querySelectorAll('.exc-checkbox-item[data-group="' + group + '"] input[type="checkbox"]');
+  items.forEach(function(cb) { cb.checked = headerCheckbox.checked; });
+  updateBulkBar();
+}
+
+function updateBulkBar() {
+  var checked = document.querySelectorAll('.exc-checkbox-item input[type="checkbox"]:checked');
+  var bar = document.getElementById('bulkActionBar');
+  var count = checked.length;
+  if (count > 0) {
+    bar.classList.add('visible');
+    document.getElementById('bulkCount').innerHTML = '&#9745; ' + count + ' exceç' + (count === 1 ? 'ão selecionada' : 'ões selecionadas');
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+function clearBulkSelection() {
+  document.querySelectorAll('.exc-checkbox-item input[type="checkbox"]:checked').forEach(function(cb) { cb.checked = false; });
+  document.querySelectorAll('.exc-checkbox-header input[type="checkbox"]:checked').forEach(function(cb) { cb.checked = false; });
+  updateBulkBar();
+}
+
+function openBulkEditModal() {
+  var count = document.querySelectorAll('.exc-checkbox-item input[type="checkbox"]:checked').length;
+  document.getElementById('bulkEditCount').textContent = count + ' exceç' + (count === 1 ? 'ão' : 'ões');
+  document.getElementById('bulkEditModal').classList.add('active');
+}
+
+function closeBulkEditModal() {
+  document.getElementById('bulkEditModal').classList.remove('active');
+}
+
+function openBulkDeleteModal() {
+  var count = document.querySelectorAll('.exc-checkbox-item input[type="checkbox"]:checked').length;
+  document.getElementById('bulkDeleteCount').textContent = count;
+  document.getElementById('bulkDeleteModal').classList.add('active');
+}
+
+function closeBulkDeleteModal() {
+  document.getElementById('bulkDeleteModal').classList.remove('active');
+}
+
+// ========================================================================
+// V8 FEATURE 5: Inheritance Chain
+// ========================================================================
+var inhData = {
+  solicitacoes: {
+    geral: ['Valor &ge; R$ 2.000 &rarr; Escalar para gestor', 'Valor &lt; R$ 2.000 &rarr; Auto-aprovar'],
+    cc: { name: 'CC Marketing', rules: ['Valor &le; R$ 5.000 &rarr; Auto-aprovar (Diretor Marketing)'] },
+    time: { name: 'Time Growth (CC Marketing)', rules: ['Valor &ge; R$ 3.000 &rarr; Escalar VP Marketing'] }
+  },
+  cartao: {
+    geral: ['Valor &gt; R$ 50 &rarr; Exigir comprovante', 'Cartão virtual &rarr; Aprovar automaticamente'],
+    cc: { name: 'CC Vendas', rules: ['Valor &gt; R$ 100 &rarr; Exigir comprovante'] },
+    time: { name: 'Time Enterprise (CC Vendas)', rules: ['Sem limite de comprovante'] }
+  },
+  reembolsos: {
+    geral: ['Valor &ge; R$ 200 &rarr; Exigir NF-e + Justificativa', 'Quilometragem &rarr; Aprovar automaticamente'],
+    cc: { name: 'CC Vendas', rules: ['Sem limite de reembolso viagem'] },
+    time: { name: 'Time Comercial (CC Vendas)', rules: ['Reembolso ilimitado para viagens'] }
+  },
+  viagens: {
+    geral: ['Classe &ne; Econômica &rarr; Bloquear', 'Hospedagem &gt; R$ 500/diária &rarr; Escalar'],
+    cc: { name: 'CC Internacional', rules: ['Hospedagem até R$ 2.000/noite'] },
+    time: { name: 'Time EUA (CC Internacional)', rules: ['Hospedagem até R$ 3.000/noite'] }
+  }
+};
+
+function toggleInheritance() {
+  var toggle = document.getElementById('inhToggle');
+  var body = document.getElementById('inhBody');
+  toggle.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+function updateInheritanceChain() {
+  var flow = document.getElementById('inhFlowSelect').value;
+  var data = inhData[flow];
+  if (!data) return;
+  var html = '';
+  // Geral
+  html += '<div class="inh-level inh-level-geral"><div class="inh-level-title">Geral (Empresa)</div>';
+  data.geral.forEach(function(r) { html += '<div class="inh-level-rule overridden">' + r + '</div>'; });
+  html += '</div>';
+  html += '<div class="inh-connector"><div class="inh-connector-line"></div><div class="inh-connector-text">sobrescrito por &#9660;</div><div class="inh-connector-line"></div></div>';
+  // CC
+  html += '<div class="inh-level inh-level-cc"><div class="inh-level-title">' + data.cc.name + '</div>';
+  data.cc.rules.forEach(function(r) { html += '<div class="inh-level-rule overridden">' + r + '</div>'; });
+  html += '</div>';
+  html += '<div class="inh-connector"><div class="inh-connector-line"></div><div class="inh-connector-text">sobrescrito por &#9660;</div><div class="inh-connector-line"></div></div>';
+  // Time
+  html += '<div class="inh-level inh-level-time"><div class="inh-level-title">' + data.time.name + '</div>';
+  data.time.rules.forEach(function(r) { html += '<div class="inh-level-rule effective">' + r + ' <span class="inh-effective-badge">Regra efetiva</span></div>'; });
+  html += '</div>';
+  document.getElementById('inhChainContent').innerHTML = html;
+}
+
+// ========================================================================
+// V8 FEATURE 7: Impact Preview Modal
+// ========================================================================
+function openImpactModal() {
+  document.getElementById('impactModal').classList.add('active');
+}
+
+function closeImpactModal() {
+  document.getElementById('impactModal').classList.remove('active');
+}
+
+// Also add "Salvar alterações" button to slideover that triggers impact modal
+// Hook into existing save workflow on the general slideover
 </script>
 
 </body>
