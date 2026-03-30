@@ -308,15 +308,20 @@ a:hover { text-decoration: underline; }
   border: 1px solid #BFDBFE;
   border-radius: var(--radius-lg);
   padding: var(--spacing-md) var(--spacing-lg);
+  padding-right: 180px;
   position: relative;
   margin-bottom: var(--spacing-lg);
 }
 
-.agent-banner-left {
+.agent-banner-top {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   flex-wrap: wrap;
+}
+
+.agent-banner-left {
+  display: contents;
 }
 
 .agent-dot {
@@ -1649,7 +1654,8 @@ a:hover { text-decoration: underline; }
   .view-controls { flex-direction: column; }
   .search-filters { width: 100%; }
   .simulation-form { grid-template-columns: 1fr; }
-  .agent-banner { flex-direction: column; align-items: flex-start; }
+  .agent-banner { padding-right: var(--spacing-lg); }
+  .agent-banner-right { position: static; margin-top: var(--spacing-sm); }
   .data-table { display: none; }
   .mobile-cards { display: block !important; }
   .fab { bottom: var(--spacing-md); right: var(--spacing-md); }
@@ -2033,13 +2039,13 @@ a:hover { text-decoration: underline; }
 
       <!-- AGENT STATUS BANNER -->
       <div class="agent-banner" id="agentBanner">
-        <div class="agent-banner-left">
+        <div class="agent-banner-top">
           <span class="agent-dot"></span>
           <span class="agent-label">Policy Agent ativo</span>
           <span class="agent-info">
             Modo: Recomendação
             <span class="agent-info-divider">·</span>
-            <span style="cursor:pointer;" onclick="switchTab('Compliance')"><span title="Percentual de gastos dentro da política nos últimos 90 dias. Meta: 90%.">84.5% in-policy <span style="color:var(--danger-red);font-weight:600;">↓2.3%</span></span><br><span class="ip-bar-wrap" title="Meta: ≥85% · Atenção: 70-85% · Crítico: &lt;70%"><span class="ip-bar"><span class="ip-bar-fill" style="width:84.5%;"><span class="ip-bar-marker"></span></span></span></span></span>
+            <span style="cursor:pointer;" onclick="switchTab('Compliance')"><span title="Percentual de gastos dentro da política nos últimos 90 dias. Meta: 90%.">84.5% in-policy <span style="color:var(--danger-red);font-weight:600;">↓2.3%</span></span> <span class="ip-bar-wrap" title="Meta: ≥85% · Atenção: 70-85% · Crítico: &lt;70%"><span class="ip-bar"><span class="ip-bar-fill" style="width:84.5%;"><span class="ip-bar-marker"></span></span></span></span></span>
             <span class="agent-info-divider">·</span>
             99.1% acurácia
             <span class="agent-info-divider">·</span>
@@ -2054,8 +2060,8 @@ a:hover { text-decoration: underline; }
             <span style="color: var(--gray-400);">›</span>
             <span class="hierarchy-badge workflows">Workflows</span>
           </div>
-          <div style="font-size:11px;color:var(--gray-400);margin-top:var(--spacing-xs);line-height:1.5;">Suas regras seguem esta prioridade: Flags são regras fixas que sempre valem (ex: NF-e obrigatória acima de R$200). Agent é a IA que avalia cada despesa e recomenda ações. Workflows são regras condicionais (ex: se valor > R$500, exigir comprovante). Flags prevalecem sobre o Agent, que prevalece sobre Workflows.</div>
         </div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:var(--spacing-xs);line-height:1.5;">Suas regras seguem esta prioridade: Flags são regras fixas que sempre valem (ex: NF-e obrigatória acima de R$200). Agent é a IA que avalia cada despesa e recomenda ações. Workflows são regras condicionais (ex: se valor > R$500, exigir comprovante). Flags prevalecem sobre o Agent, que prevalece sobre Workflows.</div>
         <div class="agent-banner-right">
           <button class="btn btn-secondary btn-sm" id="agentDropdownBtn" onclick="toggleAgentDropdown()" aria-expanded="false" aria-controls="agentDropdown">
             Configurar Agent ▾
