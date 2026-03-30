@@ -308,12 +308,8 @@ a:hover { text-decoration: underline; }
   border: 1px solid #BFDBFE;
   border-radius: var(--radius-lg);
   padding: var(--spacing-md) var(--spacing-lg);
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--spacing-md);
+  position: relative;
   margin-bottom: var(--spacing-lg);
-  flex-wrap: wrap;
 }
 
 .agent-banner-left {
@@ -354,7 +350,9 @@ a:hover { text-decoration: underline; }
 }
 
 .agent-banner-right {
-  position: relative;
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-lg);
 }
 
 .agent-dropdown {
